@@ -2,6 +2,8 @@
 
 MindLang is a high-level programming language designed to simplify the creation and management of logic for the Mindustry game. It translates high-level constructs like functions, loops, and conditionals into MLog, the low-level programming language used in Mindustry.
 
+For a better understanding on how MLog works, please reference [Yruei](https://github.com/Yrueii)'s documentation at [Mlog Documentation](https://yrueii.github.io/Mlog%20Documentation/).
+
 ## Features
 
 - **Simplified Syntax:** Write human-readable code for complex logic.
