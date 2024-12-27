@@ -1,0 +1,47 @@
+lexer grammar MindLangLexer;
+
+// Keywords
+LET: 'let';
+WHILE: 'while';
+PRINT: 'print';
+IF: 'if';
+ELSE: 'else';
+FUNCTION: 'function';
+FOR: 'for';
+RETURN: 'return';
+BREAK: 'break';
+
+// Operators and Symbols
+IDENTIFIER: [a-zA-Z_][a-zA-Z0-9_]*;
+NUMBER: [0-9]+;
+STRING: '"' .*? '"';  // Quoted string literals
+PLUS: '+';
+MINUS: '-';
+MULT: '*';
+DIV: '/';
+MOD: '%';
+ASSIGN: '=';
+PLUS_ASSIGN: '+=';
+EQ: '==';
+LT: '<';
+GT: '>';
+LE: '<=';
+GE: '>=';
+SEMICOLON: ';';
+COMMA: ',';
+LPAREN: '(';
+RPAREN: ')';
+LBRACE: '{';
+RBRACE: '}';
+LBRACKET: '[';
+RBRACKET: ']';
+DOT: '.';
+INCREMENT: '++';
+DECREMENT: '--';
+
+// Comments
+LINE_COMMENT: '//' ~[\r\n]* -> skip;
+BLOCK_COMMENT: '/*' .*? '*/' -> skip;
+
+// Whitespace
+WHITESPACE: [ \t\r\n]+ -> skip;

@@ -1,0 +1,26 @@
+{
+  "name": "mindlang",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --verbose --watchAll",
+    "build": "tsc",
+    "start": "node out/src/index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/node": "^22.10.2",
+    "antlr4ts": "^0.5.0-alpha.4",
+    "jest": "^29.7.0",
+    "typescript": "^5.7.2"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.14",
+    "antlr4ts-cli": "^0.5.0-alpha.4",
+    "ts-jest": "^29.2.5",
+    "ts-node": "^10.9.2"
+  }
+}

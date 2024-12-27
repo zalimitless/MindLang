@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "module": "commonjs", // Ensure this is "commonjs" for Jest compatibility
+    "target": "ES2016", // Your JavaScript version
+    "esModuleInterop": true, // Enables compatibility with CommonJS modules
+    "skipLibCheck": true,
+    "strict": true,
+    "outDir": "out",
+    "sourceMap": true,
+  },
+  "exclude": [
+    "node_modules",
+    "**/*.test.ts", // Exclude test files
+    "**/*.spec.ts"  // Optionally, exclude spec files as well
+  ]
+}
