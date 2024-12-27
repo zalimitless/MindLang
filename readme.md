@@ -115,6 +115,16 @@ end
 
 Contributions are welcome! Please fork the repository and submit a pull request with your changes.
 
+**All contributors must:**
+
+   - Create a new branch for their changes.
+    
+   - Push the branch to the remote repository.
+    
+   - Open a pull request targeting the main branch.
+    
+A reviewer will review and approve the pull request before it can be merged.
+
 **Please note:** All pull requests need to come with unit tests, regardless if it's new code or updated code.
 
 ## Reporting Issues
