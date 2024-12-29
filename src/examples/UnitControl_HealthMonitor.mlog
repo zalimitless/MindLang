@@ -1,0 +1,54 @@
+# Important note: This file is only an example output and does not represent the real compiled file.
+
+# Message block
+set MESSAGES message1
+
+# Attempt to bind the poly unit
+ubind @poly
+jump noPoly notEqual @unit null
+sensor __polyControlled @unit @controlled
+jump noPoly equal __polyControlled 0
+ucontrol flag 1 0 0 0 0
+set poly @unit
+jump afterPoly always 0 0
+label noPoly
+print "No unit of type poly found."
+printflush MESSAGES
+end
+label afterPoly
+
+# Attempt to bind the mega unit
+ubind @mega
+jump noMega notEqual @unit null
+sensor __megaControlled @unit @controlled
+jump noMega equal __megaControlled 0
+ucontrol flag 1 0 0 0 0
+set mega @unit
+jump afterMega always 0 0
+label noMega
+print "No unit of type mega found."
+printflush MESSAGES
+end
+label afterMega
+
+# Health monitoring loop
+label monitorLoop
+# Check health of poly unit
+ubind poly
+sensor polyHealth @unit @health
+sensor polyMaxHealth @unit @maxHealth
+op mul healthThreshold polyMaxHealth 0.8
+jump skipPolyMove gte polyHealth healthThreshold
+ucontrol move @thisx sub @thisy 10 0 0 0
+label skipPolyMove
+
+# Check health of mega unit
+ubind mega
+sensor megaHealth @unit @health
+sensor megaMaxHealth @unit @maxHealth
+op mul healthThreshold megaMaxHealth 0.8
+jump skipMegaMove gte megaHealth healthThreshold
+ucontrol move @thisx sub @thisy 10 0 0 0
+label skipMegaMove
+
+jump monitorLoop always 0 0

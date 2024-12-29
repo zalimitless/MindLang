@@ -1,9 +1,11 @@
-// Generated from ./MindLang.g4 by ANTLR 4.9.0-SNAPSHOT
+// Generated from src/G4/MindLang.g4 by ANTLR 4.9.0-SNAPSHOT
 
 
 import { ParseTreeVisitor } from "antlr4ts/tree/ParseTreeVisitor";
 
 import { ProgramContext } from "./MindLangParser";
+import { GlobalStatementContext } from "./MindLangParser";
+import { ProcessorDeclarationContext } from "./MindLangParser";
 import { BlockContext } from "./MindLangParser";
 import { StatementOrBlockContext } from "./MindLangParser";
 import { StatementContext } from "./MindLangParser";
@@ -20,6 +22,13 @@ import { FunctionCallContext } from "./MindLangParser";
 import { ReturnStatementContext } from "./MindLangParser";
 import { IncrementDecrementStatementContext } from "./MindLangParser";
 import { BreakStatementContext } from "./MindLangParser";
+import { SwitchStatementContext } from "./MindLangParser";
+import { SwitchBlockContext } from "./MindLangParser";
+import { SwitchCaseContext } from "./MindLangParser";
+import { DefaultClauseContext } from "./MindLangParser";
+import { EventHandlerContext } from "./MindLangParser";
+import { TryCatchContext } from "./MindLangParser";
+import { ThrowStatementContext } from "./MindLangParser";
 import { ExpressionContext } from "./MindLangParser";
 import { UnaryExpressionContext } from "./MindLangParser";
 import { PrimaryExpressionContext } from "./MindLangParser";
@@ -41,6 +50,20 @@ export interface MindLangVisitor<Result> extends ParseTreeVisitor<Result> {
 	 * @return the visitor result
 	 */
 	visitProgram?: (ctx: ProgramContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `MindLangParser.globalStatement`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitGlobalStatement?: (ctx: GlobalStatementContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `MindLangParser.processorDeclaration`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitProcessorDeclaration?: (ctx: ProcessorDeclarationContext) => Result;
 
 	/**
 	 * Visit a parse tree produced by `MindLangParser.block`.
@@ -153,6 +176,55 @@ export interface MindLangVisitor<Result> extends ParseTreeVisitor<Result> {
 	 * @return the visitor result
 	 */
 	visitBreakStatement?: (ctx: BreakStatementContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `MindLangParser.switchStatement`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitSwitchStatement?: (ctx: SwitchStatementContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `MindLangParser.switchBlock`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitSwitchBlock?: (ctx: SwitchBlockContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `MindLangParser.switchCase`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitSwitchCase?: (ctx: SwitchCaseContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `MindLangParser.defaultClause`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitDefaultClause?: (ctx: DefaultClauseContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `MindLangParser.eventHandler`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitEventHandler?: (ctx: EventHandlerContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `MindLangParser.tryCatch`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitTryCatch?: (ctx: TryCatchContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `MindLangParser.throwStatement`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitThrowStatement?: (ctx: ThrowStatementContext) => Result;
 
 	/**
 	 * Visit a parse tree produced by `MindLangParser.expression`.

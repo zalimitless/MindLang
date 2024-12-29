@@ -1,6 +1,7 @@
 grammar MindLang;
 
-//This is where the Lexer code starts
+// Lexer Rules
+// ------------------------------------------------------------------
 // Keywords
 LET: 'let';
 WHILE: 'while';
@@ -11,6 +12,14 @@ FUNCTION: 'function';
 FOR: 'for';
 RETURN: 'return';
 BREAK: 'break';
+SWITCH: 'switch';
+CASE: 'case';
+DEFAULT: 'default';
+ON: 'on';
+TRY: 'try';
+CATCH: 'catch';
+THROW: 'throw';
+PROCESSOR: 'processor';
 
 // Operators and Symbols
 IDENTIFIER: [a-zA-Z_][a-zA-Z0-9_]*;
@@ -22,7 +31,7 @@ MULT: '*';
 DIV: '/';
 MOD: '%';
 ASSIGN: '=';
-PLUS_ASSIGN: '+=';
+PLUS_ASSIGN: '+='; 
 EQ: '==';
 LT: '<';
 GT: '>';
@@ -30,6 +39,7 @@ LE: '<=';
 GE: '>=';
 SEMICOLON: ';';
 COMMA: ',';
+COLON: ':';
 LPAREN: '(';
 RPAREN: ')';
 LBRACE: '{';
@@ -47,18 +57,29 @@ BLOCK_COMMENT: '/*' .*? '*/' -> skip;
 // Whitespace
 WHITESPACE: [ \t\r\n]+ -> skip;
 
-// This is where the Parser code starts
+// Parser Rules
+// ------------------------------------------------------------------
 // Entry point
-// ------------------------------------------------------------------
-// 1) program: entry point
-// ------------------------------------------------------------------
 program
-    : statement*
+    : globalStatement* // Allows processors and global functions
     ;
 
 // ------------------------------------------------------------------
-// 2) Block vs. single-statement
+// Global statements
+globalStatement
+    : processorDeclaration
+    | functionDeclaration
+    | variableDeclaration
+    ;
+
 // ------------------------------------------------------------------
+// Processor Declaration
+processorDeclaration
+    : PROCESSOR IDENTIFIER block
+    ;
+
+// ------------------------------------------------------------------
+// Block vs. single-statement
 block
     : LBRACE statement* RBRACE
     ;
@@ -69,8 +90,7 @@ statementOrBlock
     ;
 
 // ------------------------------------------------------------------
-// 3) statement: list of all possible top-level statements
-// ------------------------------------------------------------------
+// List of all possible top-level statements
 statement
     : variableDeclaration
     | assignmentStatement
@@ -81,38 +101,38 @@ statement
     | functionDeclaration
     | functionCall
     | returnStatement
-    | incrementDecrementStatement SEMICOLON
+    | incrementDecrementStatement SEMICOLON?
+    | switchStatement
+    | eventHandler
+    | tryCatch
+    | throwStatement
     | breakStatement
     ;
 
 // ------------------------------------------------------------------
-// 4) Variable Declaration
-// ------------------------------------------------------------------
+// Variable Declaration
 variableDeclaration
     : LET IDENTIFIER ASSIGN expression SEMICOLON
     ;
 
 // ------------------------------------------------------------------
-// 5) Assignment Statement
-// ------------------------------------------------------------------
+// Assignment Statement
 assignmentStatement
     : IDENTIFIER ASSIGN expression SEMICOLON
     | IDENTIFIER PLUS_ASSIGN expression SEMICOLON
     ;
 
 // ------------------------------------------------------------------
-// 6) Print Statement
-// ------------------------------------------------------------------
+// Print Statement
 printStatement
     : PRINT LPAREN expression RPAREN SEMICOLON
     ;
 
 // ------------------------------------------------------------------
-// 7) If Statement with optional else if's
-// ------------------------------------------------------------------
+// If Statement with optional else if's
 ifStatement
     : IF LPAREN expression RPAREN statementOrBlock
-      (elseIfClause)*
+      (elseIfClause)* 
       (elseClause)?
     ;
 
@@ -125,15 +145,13 @@ elseClause
     ;
 
 // ------------------------------------------------------------------
-// 8) While Statement (allow single statement or block)
-// ------------------------------------------------------------------
+// While Statement (allow single statement or block)
 whileStatement
     : WHILE LPAREN expression RPAREN statementOrBlock
     ;
 
 // ------------------------------------------------------------------
-// 9) For Statement (likewise allow single statement or block)
-// ------------------------------------------------------------------
+// For Statement (likewise allow single statement or block)
 forStatement
     : FOR LPAREN
         variableDeclaration
@@ -145,8 +163,7 @@ forStatement
     ;
 
 // ------------------------------------------------------------------
-// 10) Function Declaration
-// ------------------------------------------------------------------
+// Function Declaration
 functionDeclaration
     : FUNCTION IDENTIFIER
       LPAREN (IDENTIFIER (COMMA IDENTIFIER)*)? RPAREN
@@ -154,45 +171,67 @@ functionDeclaration
     ;
 
 // ------------------------------------------------------------------
-// 11) Function Call
-// ------------------------------------------------------------------
+// Function Call
 functionCall
     : IDENTIFIER LPAREN (expression (COMMA expression)*)? RPAREN SEMICOLON
     ;
 
 // ------------------------------------------------------------------
-// 12) Return Statement
-// ------------------------------------------------------------------
+// Return Statement
 returnStatement
     : RETURN expression SEMICOLON
     ;
 
 // ------------------------------------------------------------------
-// 13) Increment/Decrement Statement
-// ------------------------------------------------------------------
+// Increment/Decrement Statement
 incrementDecrementStatement
     : IDENTIFIER (INCREMENT | DECREMENT)
     ;
 
 // ------------------------------------------------------------------
-// 14) Break Statement
-// ------------------------------------------------------------------
+// Break Statement
 breakStatement
     : BREAK SEMICOLON
     ;
 
 // ------------------------------------------------------------------
-// 15) Expression Handling (no left recursion)
+// Switch Statement
+switchStatement
+    : SWITCH expression switchBlock
+    ;
+
+switchBlock
+    : LBRACE switchCase* defaultClause? RBRACE
+    ;
+
+switchCase
+    : CASE expression COLON statementOrBlock
+    ;
+
+defaultClause
+    : DEFAULT COLON statementOrBlock
+    ;
+
 // ------------------------------------------------------------------
-//
-//    expression -> unaryExpression ( (op) unaryExpression )*
-//    unaryExpression -> (MINUS)? primaryExpression
-//    primaryExpression -> basePrimaryExpression (postfixOp)*
-//
-//    This structure eliminates left recursion and allows negative
-//    numbers (e.g. -10) plus postfix operators like .field, (args),
-//    [index], etc.
+// Event Handler
+eventHandler
+    : ON LPAREN STRING COMMA IDENTIFIER RPAREN block
+    ;
+
 // ------------------------------------------------------------------
+// Try-Catch Block
+tryCatch
+    : TRY block CATCH LPAREN IDENTIFIER RPAREN block
+    ;
+
+// ------------------------------------------------------------------
+// Throw Statement
+throwStatement
+    : THROW expression SEMICOLON
+    ;
+
+// ------------------------------------------------------------------
+// Expression Handling (no left recursion)
 expression
     : unaryExpression
       (

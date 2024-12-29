@@ -9,13 +9,6 @@ import { translateToTarget } from "./traverse";
 // import { Optimizer } from "./optimizer";
 
 export class Compiler {
-  private irGenerator: IRGenerator;
-  // private optimizer: Optimizer;
-
-  constructor() {
-    this.irGenerator = new IRGenerator();
-    // this.optimizer = new Optimizer();
-  }
 
   compile(sourceCode: string): IRNode {
     // Step 1: Tokenization
@@ -32,7 +25,8 @@ export class Compiler {
     const ast: ASTNode = astVisitor.visit(parseTree);
 
     // Step 4: IR Generation
-    let ir: IRNode = this.irGenerator.generateIR(ast);
+    const irGenerator = new IRGenerator();
+    let ir: IRNode = irGenerator.generateIR(ast);
 
     // Optional Step 5: Optimization (Not implemented yet)
     // ir = this.optimizer.optimize(ir);
