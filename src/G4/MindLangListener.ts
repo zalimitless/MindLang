@@ -1,9 +1,11 @@
-// Generated from ./MindLang.g4 by ANTLR 4.9.0-SNAPSHOT
+// Generated from src/G4/MindLang.g4 by ANTLR 4.9.0-SNAPSHOT
 
 
 import { ParseTreeListener } from "antlr4ts/tree/ParseTreeListener";
 
 import { ProgramContext } from "./MindLangParser";
+import { GlobalStatementContext } from "./MindLangParser";
+import { ProcessorDeclarationContext } from "./MindLangParser";
 import { BlockContext } from "./MindLangParser";
 import { StatementOrBlockContext } from "./MindLangParser";
 import { StatementContext } from "./MindLangParser";
@@ -20,6 +22,13 @@ import { FunctionCallContext } from "./MindLangParser";
 import { ReturnStatementContext } from "./MindLangParser";
 import { IncrementDecrementStatementContext } from "./MindLangParser";
 import { BreakStatementContext } from "./MindLangParser";
+import { SwitchStatementContext } from "./MindLangParser";
+import { SwitchBlockContext } from "./MindLangParser";
+import { SwitchCaseContext } from "./MindLangParser";
+import { DefaultClauseContext } from "./MindLangParser";
+import { EventHandlerContext } from "./MindLangParser";
+import { TryCatchContext } from "./MindLangParser";
+import { ThrowStatementContext } from "./MindLangParser";
 import { ExpressionContext } from "./MindLangParser";
 import { UnaryExpressionContext } from "./MindLangParser";
 import { PrimaryExpressionContext } from "./MindLangParser";
@@ -42,6 +51,28 @@ export interface MindLangListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	exitProgram?: (ctx: ProgramContext) => void;
+
+	/**
+	 * Enter a parse tree produced by `MindLangParser.globalStatement`.
+	 * @param ctx the parse tree
+	 */
+	enterGlobalStatement?: (ctx: GlobalStatementContext) => void;
+	/**
+	 * Exit a parse tree produced by `MindLangParser.globalStatement`.
+	 * @param ctx the parse tree
+	 */
+	exitGlobalStatement?: (ctx: GlobalStatementContext) => void;
+
+	/**
+	 * Enter a parse tree produced by `MindLangParser.processorDeclaration`.
+	 * @param ctx the parse tree
+	 */
+	enterProcessorDeclaration?: (ctx: ProcessorDeclarationContext) => void;
+	/**
+	 * Exit a parse tree produced by `MindLangParser.processorDeclaration`.
+	 * @param ctx the parse tree
+	 */
+	exitProcessorDeclaration?: (ctx: ProcessorDeclarationContext) => void;
 
 	/**
 	 * Enter a parse tree produced by `MindLangParser.block`.
@@ -218,6 +249,83 @@ export interface MindLangListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	exitBreakStatement?: (ctx: BreakStatementContext) => void;
+
+	/**
+	 * Enter a parse tree produced by `MindLangParser.switchStatement`.
+	 * @param ctx the parse tree
+	 */
+	enterSwitchStatement?: (ctx: SwitchStatementContext) => void;
+	/**
+	 * Exit a parse tree produced by `MindLangParser.switchStatement`.
+	 * @param ctx the parse tree
+	 */
+	exitSwitchStatement?: (ctx: SwitchStatementContext) => void;
+
+	/**
+	 * Enter a parse tree produced by `MindLangParser.switchBlock`.
+	 * @param ctx the parse tree
+	 */
+	enterSwitchBlock?: (ctx: SwitchBlockContext) => void;
+	/**
+	 * Exit a parse tree produced by `MindLangParser.switchBlock`.
+	 * @param ctx the parse tree
+	 */
+	exitSwitchBlock?: (ctx: SwitchBlockContext) => void;
+
+	/**
+	 * Enter a parse tree produced by `MindLangParser.switchCase`.
+	 * @param ctx the parse tree
+	 */
+	enterSwitchCase?: (ctx: SwitchCaseContext) => void;
+	/**
+	 * Exit a parse tree produced by `MindLangParser.switchCase`.
+	 * @param ctx the parse tree
+	 */
+	exitSwitchCase?: (ctx: SwitchCaseContext) => void;
+
+	/**
+	 * Enter a parse tree produced by `MindLangParser.defaultClause`.
+	 * @param ctx the parse tree
+	 */
+	enterDefaultClause?: (ctx: DefaultClauseContext) => void;
+	/**
+	 * Exit a parse tree produced by `MindLangParser.defaultClause`.
+	 * @param ctx the parse tree
+	 */
+	exitDefaultClause?: (ctx: DefaultClauseContext) => void;
+
+	/**
+	 * Enter a parse tree produced by `MindLangParser.eventHandler`.
+	 * @param ctx the parse tree
+	 */
+	enterEventHandler?: (ctx: EventHandlerContext) => void;
+	/**
+	 * Exit a parse tree produced by `MindLangParser.eventHandler`.
+	 * @param ctx the parse tree
+	 */
+	exitEventHandler?: (ctx: EventHandlerContext) => void;
+
+	/**
+	 * Enter a parse tree produced by `MindLangParser.tryCatch`.
+	 * @param ctx the parse tree
+	 */
+	enterTryCatch?: (ctx: TryCatchContext) => void;
+	/**
+	 * Exit a parse tree produced by `MindLangParser.tryCatch`.
+	 * @param ctx the parse tree
+	 */
+	exitTryCatch?: (ctx: TryCatchContext) => void;
+
+	/**
+	 * Enter a parse tree produced by `MindLangParser.throwStatement`.
+	 * @param ctx the parse tree
+	 */
+	enterThrowStatement?: (ctx: ThrowStatementContext) => void;
+	/**
+	 * Exit a parse tree produced by `MindLangParser.throwStatement`.
+	 * @param ctx the parse tree
+	 */
+	exitThrowStatement?: (ctx: ThrowStatementContext) => void;
 
 	/**
 	 * Enter a parse tree produced by `MindLangParser.expression`.

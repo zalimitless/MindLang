@@ -1,5 +1,7 @@
 lexer grammar MindLangLexer;
 
+// Lexer Rules
+// ------------------------------------------------------------------
 // Keywords
 LET: 'let';
 WHILE: 'while';
@@ -10,6 +12,14 @@ FUNCTION: 'function';
 FOR: 'for';
 RETURN: 'return';
 BREAK: 'break';
+SWITCH: 'switch';
+CASE: 'case';
+DEFAULT: 'default';
+ON: 'on';
+TRY: 'try';
+CATCH: 'catch';
+THROW: 'throw';
+PROCESSOR: 'processor';
 
 // Operators and Symbols
 IDENTIFIER: [a-zA-Z_][a-zA-Z0-9_]*;
@@ -21,7 +31,7 @@ MULT: '*';
 DIV: '/';
 MOD: '%';
 ASSIGN: '=';
-PLUS_ASSIGN: '+=';
+PLUS_ASSIGN: '+='; 
 EQ: '==';
 LT: '<';
 GT: '>';
@@ -29,6 +39,7 @@ LE: '<=';
 GE: '>=';
 SEMICOLON: ';';
 COMMA: ',';
+COLON: ':';
 LPAREN: '(';
 RPAREN: ')';
 LBRACE: '{';

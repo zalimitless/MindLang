@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest",
     "test:watch": "jest --verbose --watchAll",
-    "build": "tsc",
+    "build": " antlr4ts -visitor -o src/G4 src/G4/MindLang.g4 && tsc",
     "start": "node out/src/index.js"
   },
   "author": "",
