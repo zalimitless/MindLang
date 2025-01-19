@@ -4,6 +4,8 @@ MindLang is a high-level programming language designed to simplify the creation 
 
 For a better understanding on how MLog works, please refer to [Yruei](https://github.com/Yrueii)'s documentation at [Mlog Documentation](https://yrueii.github.io/Mlog%20Documentation/).
 
+If you are considering a well-optimized programming language for Mindustry, please consider checking out [Cardillan's MindCode project](https://github.com/cardillan/mindcode).
+
 ## Features
 
 - **Simplified Syntax:** Write human-readable code for complex logic.
@@ -182,9 +184,3 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
-
----
-
-### Authors
-
-- **Johan de Lange** - Initial Work

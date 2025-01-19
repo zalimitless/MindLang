@@ -54,6 +54,8 @@ statement
     | tryCatch
     | throwStatement
     | breakStatement
+    | functionAccessStatement SEMICOLON
+    | notStatement SEMICOLON
     ;
 
 // ------------------------------------------------------------------
@@ -123,10 +125,20 @@ functionCall
     : IDENTIFIER LPAREN (expression (COMMA expression)*)? RPAREN SEMICOLON
     ;
 
+// Function Access Statement
+functionAccessStatement
+    : IDENTIFIER DOT IDENTIFIER LPAREN (expression (COMMA expression)*)? RPAREN
+    ;
+
 // ------------------------------------------------------------------
 // Return Statement
 returnStatement
-    : RETURN expression SEMICOLON
+    : RETURN expression? SEMICOLON // Modified to allow optional expression
+    ;
+
+// Not Statement
+notStatement
+    : NOT LPAREN expression RPAREN
     ;
 
 // ------------------------------------------------------------------
@@ -198,7 +210,8 @@ expression
     ;
 
 unaryExpression
-    : MINUS unaryExpression
+    : NOT unaryExpression // Added support for NOT operator
+    | MINUS unaryExpression
     | primaryExpression
     ;
 

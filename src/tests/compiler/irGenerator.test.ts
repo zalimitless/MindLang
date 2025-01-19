@@ -90,7 +90,7 @@ describe("IRGenerator", () => {
               children: [{
 
                 // Declaring Function main
-                  type: "FunctionDeclaration",
+                  type: "Function",
                   args: ["main"],
                   children: [{
 
@@ -128,7 +128,7 @@ describe("IRGenerator", () => {
       children: [{
 
         // Declaring Function main
-          type: "FunctionDeclaration",
+          type: "Function",
           args: ["main"],
           children: [{
 
@@ -178,7 +178,7 @@ describe("IRGenerator", () => {
           }, {
 
             // If Statement
-            type: "IfStatement",
+            type: "If",
             args: ["x > 3"],
             children: [{
 

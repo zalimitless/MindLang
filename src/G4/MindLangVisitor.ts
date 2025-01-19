@@ -19,7 +19,9 @@ import { WhileStatementContext } from "./MindLangParser";
 import { ForStatementContext } from "./MindLangParser";
 import { FunctionDeclarationContext } from "./MindLangParser";
 import { FunctionCallContext } from "./MindLangParser";
+import { FunctionAccessStatementContext } from "./MindLangParser";
 import { ReturnStatementContext } from "./MindLangParser";
+import { NotStatementContext } from "./MindLangParser";
 import { IncrementDecrementStatementContext } from "./MindLangParser";
 import { BreakStatementContext } from "./MindLangParser";
 import { SwitchStatementContext } from "./MindLangParser";
@@ -157,11 +159,25 @@ export interface MindLangVisitor<Result> extends ParseTreeVisitor<Result> {
 	visitFunctionCall?: (ctx: FunctionCallContext) => Result;
 
 	/**
+	 * Visit a parse tree produced by `MindLangParser.functionAccessStatement`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitFunctionAccessStatement?: (ctx: FunctionAccessStatementContext) => Result;
+
+	/**
 	 * Visit a parse tree produced by `MindLangParser.returnStatement`.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	visitReturnStatement?: (ctx: ReturnStatementContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `MindLangParser.notStatement`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitNotStatement?: (ctx: NotStatementContext) => Result;
 
 	/**
 	 * Visit a parse tree produced by `MindLangParser.incrementDecrementStatement`.

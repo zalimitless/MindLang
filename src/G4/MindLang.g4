@@ -23,7 +23,7 @@ PROCESSOR: 'processor';
 
 // Operators and Symbols
 IDENTIFIER: [a-zA-Z_][a-zA-Z0-9_]*;
-NUMBER: [0-9]+;
+NUMBER: [0-9]+ ('.' [0-9]+)?;
 STRING: '"' .*? '"';  // Quoted string literals
 PLUS: '+';
 MINUS: '-';
@@ -31,7 +31,7 @@ MULT: '*';
 DIV: '/';
 MOD: '%';
 ASSIGN: '=';
-PLUS_ASSIGN: '+='; 
+PLUS_ASSIGN: '+=';
 EQ: '==';
 LT: '<';
 GT: '>';
@@ -49,6 +49,7 @@ RBRACKET: ']';
 DOT: '.';
 INCREMENT: '++';
 DECREMENT: '--';
+NOT: '!';
 
 // Comments
 LINE_COMMENT: '//' ~[\r\n]* -> skip;
@@ -107,6 +108,8 @@ statement
     | tryCatch
     | throwStatement
     | breakStatement
+    | functionAccessStatement SEMICOLON
+    | notStatement SEMICOLON
     ;
 
 // ------------------------------------------------------------------
@@ -176,10 +179,20 @@ functionCall
     : IDENTIFIER LPAREN (expression (COMMA expression)*)? RPAREN SEMICOLON
     ;
 
+// Function Access Statement
+functionAccessStatement
+    : IDENTIFIER DOT IDENTIFIER LPAREN (expression (COMMA expression)*)? RPAREN
+    ;
+
 // ------------------------------------------------------------------
 // Return Statement
 returnStatement
-    : RETURN expression SEMICOLON
+    : RETURN expression? SEMICOLON // Modified to allow optional expression
+    ;
+
+// Not Statement
+notStatement
+    : NOT LPAREN expression RPAREN
     ;
 
 // ------------------------------------------------------------------
@@ -251,7 +264,8 @@ expression
     ;
 
 unaryExpression
-    : MINUS unaryExpression
+    : NOT unaryExpression // Added support for NOT operator
+    | MINUS unaryExpression
     | primaryExpression
     ;
 

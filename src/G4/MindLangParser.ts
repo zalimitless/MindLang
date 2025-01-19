@@ -72,9 +72,10 @@ export class MindLangParser extends Parser {
 	public static readonly DOT = 42;
 	public static readonly INCREMENT = 43;
 	public static readonly DECREMENT = 44;
-	public static readonly LINE_COMMENT = 45;
-	public static readonly BLOCK_COMMENT = 46;
-	public static readonly WHITESPACE = 47;
+	public static readonly NOT = 45;
+	public static readonly LINE_COMMENT = 46;
+	public static readonly BLOCK_COMMENT = 47;
+	public static readonly WHITESPACE = 48;
 	public static readonly RULE_program = 0;
 	public static readonly RULE_globalStatement = 1;
 	public static readonly RULE_processorDeclaration = 2;
@@ -91,30 +92,33 @@ export class MindLangParser extends Parser {
 	public static readonly RULE_forStatement = 13;
 	public static readonly RULE_functionDeclaration = 14;
 	public static readonly RULE_functionCall = 15;
-	public static readonly RULE_returnStatement = 16;
-	public static readonly RULE_incrementDecrementStatement = 17;
-	public static readonly RULE_breakStatement = 18;
-	public static readonly RULE_switchStatement = 19;
-	public static readonly RULE_switchBlock = 20;
-	public static readonly RULE_switchCase = 21;
-	public static readonly RULE_defaultClause = 22;
-	public static readonly RULE_eventHandler = 23;
-	public static readonly RULE_tryCatch = 24;
-	public static readonly RULE_throwStatement = 25;
-	public static readonly RULE_expression = 26;
-	public static readonly RULE_unaryExpression = 27;
-	public static readonly RULE_primaryExpression = 28;
-	public static readonly RULE_basePrimaryExpression = 29;
-	public static readonly RULE_postfixOp = 30;
+	public static readonly RULE_functionAccessStatement = 16;
+	public static readonly RULE_returnStatement = 17;
+	public static readonly RULE_notStatement = 18;
+	public static readonly RULE_incrementDecrementStatement = 19;
+	public static readonly RULE_breakStatement = 20;
+	public static readonly RULE_switchStatement = 21;
+	public static readonly RULE_switchBlock = 22;
+	public static readonly RULE_switchCase = 23;
+	public static readonly RULE_defaultClause = 24;
+	public static readonly RULE_eventHandler = 25;
+	public static readonly RULE_tryCatch = 26;
+	public static readonly RULE_throwStatement = 27;
+	public static readonly RULE_expression = 28;
+	public static readonly RULE_unaryExpression = 29;
+	public static readonly RULE_primaryExpression = 30;
+	public static readonly RULE_basePrimaryExpression = 31;
+	public static readonly RULE_postfixOp = 32;
 	// tslint:disable:no-trailing-whitespace
 	public static readonly ruleNames: string[] = [
 		"program", "globalStatement", "processorDeclaration", "block", "statementOrBlock", 
 		"statement", "variableDeclaration", "assignmentStatement", "printStatement", 
 		"ifStatement", "elseIfClause", "elseClause", "whileStatement", "forStatement", 
-		"functionDeclaration", "functionCall", "returnStatement", "incrementDecrementStatement", 
-		"breakStatement", "switchStatement", "switchBlock", "switchCase", "defaultClause", 
-		"eventHandler", "tryCatch", "throwStatement", "expression", "unaryExpression", 
-		"primaryExpression", "basePrimaryExpression", "postfixOp",
+		"functionDeclaration", "functionCall", "functionAccessStatement", "returnStatement", 
+		"notStatement", "incrementDecrementStatement", "breakStatement", "switchStatement", 
+		"switchBlock", "switchCase", "defaultClause", "eventHandler", "tryCatch", 
+		"throwStatement", "expression", "unaryExpression", "primaryExpression", 
+		"basePrimaryExpression", "postfixOp",
 	];
 
 	private static readonly _LITERAL_NAMES: Array<string | undefined> = [
@@ -123,7 +127,7 @@ export class MindLangParser extends Parser {
 		"'try'", "'catch'", "'throw'", "'processor'", undefined, undefined, undefined, 
 		"'+'", "'-'", "'*'", "'/'", "'%'", "'='", "'+='", "'=='", "'<'", "'>'", 
 		"'<='", "'>='", "';'", "','", "':'", "'('", "')'", "'{'", "'}'", "'['", 
-		"']'", "'.'", "'++'", "'--'",
+		"']'", "'.'", "'++'", "'--'", "'!'",
 	];
 	private static readonly _SYMBOLIC_NAMES: Array<string | undefined> = [
 		undefined, "LET", "WHILE", "PRINT", "IF", "ELSE", "FUNCTION", "FOR", "RETURN", 
@@ -131,7 +135,8 @@ export class MindLangParser extends Parser {
 		"IDENTIFIER", "NUMBER", "STRING", "PLUS", "MINUS", "MULT", "DIV", "MOD", 
 		"ASSIGN", "PLUS_ASSIGN", "EQ", "LT", "GT", "LE", "GE", "SEMICOLON", "COMMA", 
 		"COLON", "LPAREN", "RPAREN", "LBRACE", "RBRACE", "LBRACKET", "RBRACKET", 
-		"DOT", "INCREMENT", "DECREMENT", "LINE_COMMENT", "BLOCK_COMMENT", "WHITESPACE",
+		"DOT", "INCREMENT", "DECREMENT", "NOT", "LINE_COMMENT", "BLOCK_COMMENT", 
+		"WHITESPACE",
 	];
 	public static readonly VOCABULARY: Vocabulary = new VocabularyImpl(MindLangParser._LITERAL_NAMES, MindLangParser._SYMBOLIC_NAMES, []);
 
@@ -167,17 +172,17 @@ export class MindLangParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 65;
+			this.state = 69;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
 			while ((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << MindLangParser.LET) | (1 << MindLangParser.FUNCTION) | (1 << MindLangParser.PROCESSOR))) !== 0)) {
 				{
 				{
-				this.state = 62;
+				this.state = 66;
 				this.globalStatement();
 				}
 				}
-				this.state = 67;
+				this.state = 71;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
 			}
@@ -202,27 +207,27 @@ export class MindLangParser extends Parser {
 		let _localctx: GlobalStatementContext = new GlobalStatementContext(this._ctx, this.state);
 		this.enterRule(_localctx, 2, MindLangParser.RULE_globalStatement);
 		try {
-			this.state = 71;
+			this.state = 75;
 			this._errHandler.sync(this);
 			switch (this._input.LA(1)) {
 			case MindLangParser.PROCESSOR:
 				this.enterOuterAlt(_localctx, 1);
 				{
-				this.state = 68;
+				this.state = 72;
 				this.processorDeclaration();
 				}
 				break;
 			case MindLangParser.FUNCTION:
 				this.enterOuterAlt(_localctx, 2);
 				{
-				this.state = 69;
+				this.state = 73;
 				this.functionDeclaration();
 				}
 				break;
 			case MindLangParser.LET:
 				this.enterOuterAlt(_localctx, 3);
 				{
-				this.state = 70;
+				this.state = 74;
 				this.variableDeclaration();
 				}
 				break;
@@ -251,11 +256,11 @@ export class MindLangParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 73;
+			this.state = 77;
 			this.match(MindLangParser.PROCESSOR);
-			this.state = 74;
+			this.state = 78;
 			this.match(MindLangParser.IDENTIFIER);
-			this.state = 75;
+			this.state = 79;
 			this.block();
 			}
 		}
@@ -281,23 +286,23 @@ export class MindLangParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 77;
-			this.match(MindLangParser.LBRACE);
 			this.state = 81;
+			this.match(MindLangParser.LBRACE);
+			this.state = 85;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
-			while ((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << MindLangParser.LET) | (1 << MindLangParser.WHILE) | (1 << MindLangParser.PRINT) | (1 << MindLangParser.IF) | (1 << MindLangParser.FUNCTION) | (1 << MindLangParser.FOR) | (1 << MindLangParser.RETURN) | (1 << MindLangParser.BREAK) | (1 << MindLangParser.SWITCH) | (1 << MindLangParser.ON) | (1 << MindLangParser.TRY) | (1 << MindLangParser.THROW) | (1 << MindLangParser.IDENTIFIER))) !== 0)) {
+			while ((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << MindLangParser.LET) | (1 << MindLangParser.WHILE) | (1 << MindLangParser.PRINT) | (1 << MindLangParser.IF) | (1 << MindLangParser.FUNCTION) | (1 << MindLangParser.FOR) | (1 << MindLangParser.RETURN) | (1 << MindLangParser.BREAK) | (1 << MindLangParser.SWITCH) | (1 << MindLangParser.ON) | (1 << MindLangParser.TRY) | (1 << MindLangParser.THROW) | (1 << MindLangParser.IDENTIFIER))) !== 0) || _la === MindLangParser.NOT) {
 				{
 				{
-				this.state = 78;
+				this.state = 82;
 				this.statement();
 				}
 				}
-				this.state = 83;
+				this.state = 87;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
 			}
-			this.state = 84;
+			this.state = 88;
 			this.match(MindLangParser.RBRACE);
 			}
 		}
@@ -320,13 +325,13 @@ export class MindLangParser extends Parser {
 		let _localctx: StatementOrBlockContext = new StatementOrBlockContext(this._ctx, this.state);
 		this.enterRule(_localctx, 8, MindLangParser.RULE_statementOrBlock);
 		try {
-			this.state = 88;
+			this.state = 92;
 			this._errHandler.sync(this);
 			switch (this._input.LA(1)) {
 			case MindLangParser.LBRACE:
 				this.enterOuterAlt(_localctx, 1);
 				{
-				this.state = 86;
+				this.state = 90;
 				this.block();
 				}
 				break;
@@ -343,9 +348,10 @@ export class MindLangParser extends Parser {
 			case MindLangParser.TRY:
 			case MindLangParser.THROW:
 			case MindLangParser.IDENTIFIER:
+			case MindLangParser.NOT:
 				this.enterOuterAlt(_localctx, 2);
 				{
-				this.state = 87;
+				this.state = 91;
 				this.statement();
 				}
 				break;
@@ -373,13 +379,13 @@ export class MindLangParser extends Parser {
 		this.enterRule(_localctx, 10, MindLangParser.RULE_statement);
 		let _la: number;
 		try {
-			this.state = 108;
+			this.state = 118;
 			this._errHandler.sync(this);
 			switch ( this.interpreter.adaptivePredict(this._input, 5, this._ctx) ) {
 			case 1:
 				this.enterOuterAlt(_localctx, 1);
 				{
-				this.state = 90;
+				this.state = 94;
 				this.variableDeclaration();
 				}
 				break;
@@ -387,7 +393,7 @@ export class MindLangParser extends Parser {
 			case 2:
 				this.enterOuterAlt(_localctx, 2);
 				{
-				this.state = 91;
+				this.state = 95;
 				this.assignmentStatement();
 				}
 				break;
@@ -395,7 +401,7 @@ export class MindLangParser extends Parser {
 			case 3:
 				this.enterOuterAlt(_localctx, 3);
 				{
-				this.state = 92;
+				this.state = 96;
 				this.printStatement();
 				}
 				break;
@@ -403,7 +409,7 @@ export class MindLangParser extends Parser {
 			case 4:
 				this.enterOuterAlt(_localctx, 4);
 				{
-				this.state = 93;
+				this.state = 97;
 				this.ifStatement();
 				}
 				break;
@@ -411,7 +417,7 @@ export class MindLangParser extends Parser {
 			case 5:
 				this.enterOuterAlt(_localctx, 5);
 				{
-				this.state = 94;
+				this.state = 98;
 				this.whileStatement();
 				}
 				break;
@@ -419,7 +425,7 @@ export class MindLangParser extends Parser {
 			case 6:
 				this.enterOuterAlt(_localctx, 6);
 				{
-				this.state = 95;
+				this.state = 99;
 				this.forStatement();
 				}
 				break;
@@ -427,7 +433,7 @@ export class MindLangParser extends Parser {
 			case 7:
 				this.enterOuterAlt(_localctx, 7);
 				{
-				this.state = 96;
+				this.state = 100;
 				this.functionDeclaration();
 				}
 				break;
@@ -435,7 +441,7 @@ export class MindLangParser extends Parser {
 			case 8:
 				this.enterOuterAlt(_localctx, 8);
 				{
-				this.state = 97;
+				this.state = 101;
 				this.functionCall();
 				}
 				break;
@@ -443,7 +449,7 @@ export class MindLangParser extends Parser {
 			case 9:
 				this.enterOuterAlt(_localctx, 9);
 				{
-				this.state = 98;
+				this.state = 102;
 				this.returnStatement();
 				}
 				break;
@@ -451,14 +457,14 @@ export class MindLangParser extends Parser {
 			case 10:
 				this.enterOuterAlt(_localctx, 10);
 				{
-				this.state = 99;
+				this.state = 103;
 				this.incrementDecrementStatement();
-				this.state = 101;
+				this.state = 105;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
 				if (_la === MindLangParser.SEMICOLON) {
 					{
-					this.state = 100;
+					this.state = 104;
 					this.match(MindLangParser.SEMICOLON);
 					}
 				}
@@ -469,7 +475,7 @@ export class MindLangParser extends Parser {
 			case 11:
 				this.enterOuterAlt(_localctx, 11);
 				{
-				this.state = 103;
+				this.state = 107;
 				this.switchStatement();
 				}
 				break;
@@ -477,7 +483,7 @@ export class MindLangParser extends Parser {
 			case 12:
 				this.enterOuterAlt(_localctx, 12);
 				{
-				this.state = 104;
+				this.state = 108;
 				this.eventHandler();
 				}
 				break;
@@ -485,7 +491,7 @@ export class MindLangParser extends Parser {
 			case 13:
 				this.enterOuterAlt(_localctx, 13);
 				{
-				this.state = 105;
+				this.state = 109;
 				this.tryCatch();
 				}
 				break;
@@ -493,7 +499,7 @@ export class MindLangParser extends Parser {
 			case 14:
 				this.enterOuterAlt(_localctx, 14);
 				{
-				this.state = 106;
+				this.state = 110;
 				this.throwStatement();
 				}
 				break;
@@ -501,8 +507,28 @@ export class MindLangParser extends Parser {
 			case 15:
 				this.enterOuterAlt(_localctx, 15);
 				{
-				this.state = 107;
+				this.state = 111;
 				this.breakStatement();
+				}
+				break;
+
+			case 16:
+				this.enterOuterAlt(_localctx, 16);
+				{
+				this.state = 112;
+				this.functionAccessStatement();
+				this.state = 113;
+				this.match(MindLangParser.SEMICOLON);
+				}
+				break;
+
+			case 17:
+				this.enterOuterAlt(_localctx, 17);
+				{
+				this.state = 115;
+				this.notStatement();
+				this.state = 116;
+				this.match(MindLangParser.SEMICOLON);
 				}
 				break;
 			}
@@ -528,15 +554,15 @@ export class MindLangParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 110;
+			this.state = 120;
 			this.match(MindLangParser.LET);
-			this.state = 111;
+			this.state = 121;
 			this.match(MindLangParser.IDENTIFIER);
-			this.state = 112;
+			this.state = 122;
 			this.match(MindLangParser.ASSIGN);
-			this.state = 113;
+			this.state = 123;
 			this.expression();
-			this.state = 114;
+			this.state = 124;
 			this.match(MindLangParser.SEMICOLON);
 			}
 		}
@@ -559,19 +585,19 @@ export class MindLangParser extends Parser {
 		let _localctx: AssignmentStatementContext = new AssignmentStatementContext(this._ctx, this.state);
 		this.enterRule(_localctx, 14, MindLangParser.RULE_assignmentStatement);
 		try {
-			this.state = 126;
+			this.state = 136;
 			this._errHandler.sync(this);
 			switch ( this.interpreter.adaptivePredict(this._input, 6, this._ctx) ) {
 			case 1:
 				this.enterOuterAlt(_localctx, 1);
 				{
-				this.state = 116;
+				this.state = 126;
 				this.match(MindLangParser.IDENTIFIER);
-				this.state = 117;
+				this.state = 127;
 				this.match(MindLangParser.ASSIGN);
-				this.state = 118;
+				this.state = 128;
 				this.expression();
-				this.state = 119;
+				this.state = 129;
 				this.match(MindLangParser.SEMICOLON);
 				}
 				break;
@@ -579,13 +605,13 @@ export class MindLangParser extends Parser {
 			case 2:
 				this.enterOuterAlt(_localctx, 2);
 				{
-				this.state = 121;
+				this.state = 131;
 				this.match(MindLangParser.IDENTIFIER);
-				this.state = 122;
+				this.state = 132;
 				this.match(MindLangParser.PLUS_ASSIGN);
-				this.state = 123;
+				this.state = 133;
 				this.expression();
-				this.state = 124;
+				this.state = 134;
 				this.match(MindLangParser.SEMICOLON);
 				}
 				break;
@@ -612,15 +638,15 @@ export class MindLangParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 128;
+			this.state = 138;
 			this.match(MindLangParser.PRINT);
-			this.state = 129;
+			this.state = 139;
 			this.match(MindLangParser.LPAREN);
-			this.state = 130;
+			this.state = 140;
 			this.expression();
-			this.state = 131;
+			this.state = 141;
 			this.match(MindLangParser.RPAREN);
-			this.state = 132;
+			this.state = 142;
 			this.match(MindLangParser.SEMICOLON);
 			}
 		}
@@ -646,38 +672,38 @@ export class MindLangParser extends Parser {
 			let _alt: number;
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 134;
+			this.state = 144;
 			this.match(MindLangParser.IF);
-			this.state = 135;
+			this.state = 145;
 			this.match(MindLangParser.LPAREN);
-			this.state = 136;
+			this.state = 146;
 			this.expression();
-			this.state = 137;
+			this.state = 147;
 			this.match(MindLangParser.RPAREN);
-			this.state = 138;
+			this.state = 148;
 			this.statementOrBlock();
-			this.state = 142;
+			this.state = 152;
 			this._errHandler.sync(this);
 			_alt = this.interpreter.adaptivePredict(this._input, 7, this._ctx);
 			while (_alt !== 2 && _alt !== ATN.INVALID_ALT_NUMBER) {
 				if (_alt === 1) {
 					{
 					{
-					this.state = 139;
+					this.state = 149;
 					this.elseIfClause();
 					}
 					}
 				}
-				this.state = 144;
+				this.state = 154;
 				this._errHandler.sync(this);
 				_alt = this.interpreter.adaptivePredict(this._input, 7, this._ctx);
 			}
-			this.state = 146;
+			this.state = 156;
 			this._errHandler.sync(this);
 			switch ( this.interpreter.adaptivePredict(this._input, 8, this._ctx) ) {
 			case 1:
 				{
-				this.state = 145;
+				this.state = 155;
 				this.elseClause();
 				}
 				break;
@@ -705,17 +731,17 @@ export class MindLangParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 148;
+			this.state = 158;
 			this.match(MindLangParser.ELSE);
-			this.state = 149;
+			this.state = 159;
 			this.match(MindLangParser.IF);
-			this.state = 150;
+			this.state = 160;
 			this.match(MindLangParser.LPAREN);
-			this.state = 151;
+			this.state = 161;
 			this.expression();
-			this.state = 152;
+			this.state = 162;
 			this.match(MindLangParser.RPAREN);
-			this.state = 153;
+			this.state = 163;
 			this.statementOrBlock();
 			}
 		}
@@ -740,9 +766,9 @@ export class MindLangParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 155;
+			this.state = 165;
 			this.match(MindLangParser.ELSE);
-			this.state = 156;
+			this.state = 166;
 			this.statementOrBlock();
 			}
 		}
@@ -767,15 +793,15 @@ export class MindLangParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 158;
+			this.state = 168;
 			this.match(MindLangParser.WHILE);
-			this.state = 159;
+			this.state = 169;
 			this.match(MindLangParser.LPAREN);
-			this.state = 160;
+			this.state = 170;
 			this.expression();
-			this.state = 161;
+			this.state = 171;
 			this.match(MindLangParser.RPAREN);
-			this.state = 162;
+			this.state = 172;
 			this.statementOrBlock();
 			}
 		}
@@ -800,36 +826,36 @@ export class MindLangParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 164;
+			this.state = 174;
 			this.match(MindLangParser.FOR);
-			this.state = 165;
+			this.state = 175;
 			this.match(MindLangParser.LPAREN);
-			this.state = 166;
+			this.state = 176;
 			this.variableDeclaration();
-			this.state = 167;
+			this.state = 177;
 			this.expression();
-			this.state = 168;
+			this.state = 178;
 			this.match(MindLangParser.SEMICOLON);
-			this.state = 171;
+			this.state = 181;
 			this._errHandler.sync(this);
 			switch ( this.interpreter.adaptivePredict(this._input, 9, this._ctx) ) {
 			case 1:
 				{
-				this.state = 169;
+				this.state = 179;
 				this.expression();
 				}
 				break;
 
 			case 2:
 				{
-				this.state = 170;
+				this.state = 180;
 				this.incrementDecrementStatement();
 				}
 				break;
 			}
-			this.state = 173;
+			this.state = 183;
 			this.match(MindLangParser.RPAREN);
-			this.state = 174;
+			this.state = 184;
 			this.statementOrBlock();
 			}
 		}
@@ -855,41 +881,41 @@ export class MindLangParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 176;
+			this.state = 186;
 			this.match(MindLangParser.FUNCTION);
-			this.state = 177;
-			this.match(MindLangParser.IDENTIFIER);
-			this.state = 178;
-			this.match(MindLangParser.LPAREN);
 			this.state = 187;
+			this.match(MindLangParser.IDENTIFIER);
+			this.state = 188;
+			this.match(MindLangParser.LPAREN);
+			this.state = 197;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
 			if (_la === MindLangParser.IDENTIFIER) {
 				{
-				this.state = 179;
+				this.state = 189;
 				this.match(MindLangParser.IDENTIFIER);
-				this.state = 184;
+				this.state = 194;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
 				while (_la === MindLangParser.COMMA) {
 					{
 					{
-					this.state = 180;
+					this.state = 190;
 					this.match(MindLangParser.COMMA);
-					this.state = 181;
+					this.state = 191;
 					this.match(MindLangParser.IDENTIFIER);
 					}
 					}
-					this.state = 186;
+					this.state = 196;
 					this._errHandler.sync(this);
 					_la = this._input.LA(1);
 				}
 				}
 			}
 
-			this.state = 189;
+			this.state = 199;
 			this.match(MindLangParser.RPAREN);
-			this.state = 190;
+			this.state = 200;
 			this.block();
 			}
 		}
@@ -915,40 +941,100 @@ export class MindLangParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 192;
-			this.match(MindLangParser.IDENTIFIER);
-			this.state = 193;
-			this.match(MindLangParser.LPAREN);
 			this.state = 202;
+			this.match(MindLangParser.IDENTIFIER);
+			this.state = 203;
+			this.match(MindLangParser.LPAREN);
+			this.state = 212;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
-			if (((((_la - 18)) & ~0x1F) === 0 && ((1 << (_la - 18)) & ((1 << (MindLangParser.IDENTIFIER - 18)) | (1 << (MindLangParser.NUMBER - 18)) | (1 << (MindLangParser.STRING - 18)) | (1 << (MindLangParser.MINUS - 18)) | (1 << (MindLangParser.LPAREN - 18)) | (1 << (MindLangParser.LBRACKET - 18)))) !== 0)) {
+			if (((((_la - 18)) & ~0x1F) === 0 && ((1 << (_la - 18)) & ((1 << (MindLangParser.IDENTIFIER - 18)) | (1 << (MindLangParser.NUMBER - 18)) | (1 << (MindLangParser.STRING - 18)) | (1 << (MindLangParser.MINUS - 18)) | (1 << (MindLangParser.LPAREN - 18)) | (1 << (MindLangParser.LBRACKET - 18)) | (1 << (MindLangParser.NOT - 18)))) !== 0)) {
 				{
-				this.state = 194;
+				this.state = 204;
 				this.expression();
-				this.state = 199;
+				this.state = 209;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
 				while (_la === MindLangParser.COMMA) {
 					{
 					{
-					this.state = 195;
+					this.state = 205;
 					this.match(MindLangParser.COMMA);
-					this.state = 196;
+					this.state = 206;
 					this.expression();
 					}
 					}
-					this.state = 201;
+					this.state = 211;
 					this._errHandler.sync(this);
 					_la = this._input.LA(1);
 				}
 				}
 			}
 
-			this.state = 204;
+			this.state = 214;
 			this.match(MindLangParser.RPAREN);
-			this.state = 205;
+			this.state = 215;
 			this.match(MindLangParser.SEMICOLON);
+			}
+		}
+		catch (re) {
+			if (re instanceof RecognitionException) {
+				_localctx.exception = re;
+				this._errHandler.reportError(this, re);
+				this._errHandler.recover(this, re);
+			} else {
+				throw re;
+			}
+		}
+		finally {
+			this.exitRule();
+		}
+		return _localctx;
+	}
+	// @RuleVersion(0)
+	public functionAccessStatement(): FunctionAccessStatementContext {
+		let _localctx: FunctionAccessStatementContext = new FunctionAccessStatementContext(this._ctx, this.state);
+		this.enterRule(_localctx, 32, MindLangParser.RULE_functionAccessStatement);
+		let _la: number;
+		try {
+			this.enterOuterAlt(_localctx, 1);
+			{
+			this.state = 217;
+			this.match(MindLangParser.IDENTIFIER);
+			this.state = 218;
+			this.match(MindLangParser.DOT);
+			this.state = 219;
+			this.match(MindLangParser.IDENTIFIER);
+			this.state = 220;
+			this.match(MindLangParser.LPAREN);
+			this.state = 229;
+			this._errHandler.sync(this);
+			_la = this._input.LA(1);
+			if (((((_la - 18)) & ~0x1F) === 0 && ((1 << (_la - 18)) & ((1 << (MindLangParser.IDENTIFIER - 18)) | (1 << (MindLangParser.NUMBER - 18)) | (1 << (MindLangParser.STRING - 18)) | (1 << (MindLangParser.MINUS - 18)) | (1 << (MindLangParser.LPAREN - 18)) | (1 << (MindLangParser.LBRACKET - 18)) | (1 << (MindLangParser.NOT - 18)))) !== 0)) {
+				{
+				this.state = 221;
+				this.expression();
+				this.state = 226;
+				this._errHandler.sync(this);
+				_la = this._input.LA(1);
+				while (_la === MindLangParser.COMMA) {
+					{
+					{
+					this.state = 222;
+					this.match(MindLangParser.COMMA);
+					this.state = 223;
+					this.expression();
+					}
+					}
+					this.state = 228;
+					this._errHandler.sync(this);
+					_la = this._input.LA(1);
+				}
+				}
+			}
+
+			this.state = 231;
+			this.match(MindLangParser.RPAREN);
 			}
 		}
 		catch (re) {
@@ -968,16 +1054,56 @@ export class MindLangParser extends Parser {
 	// @RuleVersion(0)
 	public returnStatement(): ReturnStatementContext {
 		let _localctx: ReturnStatementContext = new ReturnStatementContext(this._ctx, this.state);
-		this.enterRule(_localctx, 32, MindLangParser.RULE_returnStatement);
+		this.enterRule(_localctx, 34, MindLangParser.RULE_returnStatement);
+		let _la: number;
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 207;
+			this.state = 233;
 			this.match(MindLangParser.RETURN);
-			this.state = 208;
-			this.expression();
-			this.state = 209;
+			this.state = 235;
+			this._errHandler.sync(this);
+			_la = this._input.LA(1);
+			if (((((_la - 18)) & ~0x1F) === 0 && ((1 << (_la - 18)) & ((1 << (MindLangParser.IDENTIFIER - 18)) | (1 << (MindLangParser.NUMBER - 18)) | (1 << (MindLangParser.STRING - 18)) | (1 << (MindLangParser.MINUS - 18)) | (1 << (MindLangParser.LPAREN - 18)) | (1 << (MindLangParser.LBRACKET - 18)) | (1 << (MindLangParser.NOT - 18)))) !== 0)) {
+				{
+				this.state = 234;
+				this.expression();
+				}
+			}
+
+			this.state = 237;
 			this.match(MindLangParser.SEMICOLON);
+			}
+		}
+		catch (re) {
+			if (re instanceof RecognitionException) {
+				_localctx.exception = re;
+				this._errHandler.reportError(this, re);
+				this._errHandler.recover(this, re);
+			} else {
+				throw re;
+			}
+		}
+		finally {
+			this.exitRule();
+		}
+		return _localctx;
+	}
+	// @RuleVersion(0)
+	public notStatement(): NotStatementContext {
+		let _localctx: NotStatementContext = new NotStatementContext(this._ctx, this.state);
+		this.enterRule(_localctx, 36, MindLangParser.RULE_notStatement);
+		try {
+			this.enterOuterAlt(_localctx, 1);
+			{
+			this.state = 239;
+			this.match(MindLangParser.NOT);
+			this.state = 240;
+			this.match(MindLangParser.LPAREN);
+			this.state = 241;
+			this.expression();
+			this.state = 242;
+			this.match(MindLangParser.RPAREN);
 			}
 		}
 		catch (re) {
@@ -997,14 +1123,14 @@ export class MindLangParser extends Parser {
 	// @RuleVersion(0)
 	public incrementDecrementStatement(): IncrementDecrementStatementContext {
 		let _localctx: IncrementDecrementStatementContext = new IncrementDecrementStatementContext(this._ctx, this.state);
-		this.enterRule(_localctx, 34, MindLangParser.RULE_incrementDecrementStatement);
+		this.enterRule(_localctx, 38, MindLangParser.RULE_incrementDecrementStatement);
 		let _la: number;
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 211;
+			this.state = 244;
 			this.match(MindLangParser.IDENTIFIER);
-			this.state = 212;
+			this.state = 245;
 			_la = this._input.LA(1);
 			if (!(_la === MindLangParser.INCREMENT || _la === MindLangParser.DECREMENT)) {
 			this._errHandler.recoverInline(this);
@@ -1035,13 +1161,13 @@ export class MindLangParser extends Parser {
 	// @RuleVersion(0)
 	public breakStatement(): BreakStatementContext {
 		let _localctx: BreakStatementContext = new BreakStatementContext(this._ctx, this.state);
-		this.enterRule(_localctx, 36, MindLangParser.RULE_breakStatement);
+		this.enterRule(_localctx, 40, MindLangParser.RULE_breakStatement);
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 214;
+			this.state = 247;
 			this.match(MindLangParser.BREAK);
-			this.state = 215;
+			this.state = 248;
 			this.match(MindLangParser.SEMICOLON);
 			}
 		}
@@ -1062,15 +1188,15 @@ export class MindLangParser extends Parser {
 	// @RuleVersion(0)
 	public switchStatement(): SwitchStatementContext {
 		let _localctx: SwitchStatementContext = new SwitchStatementContext(this._ctx, this.state);
-		this.enterRule(_localctx, 38, MindLangParser.RULE_switchStatement);
+		this.enterRule(_localctx, 42, MindLangParser.RULE_switchStatement);
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 217;
+			this.state = 250;
 			this.match(MindLangParser.SWITCH);
-			this.state = 218;
+			this.state = 251;
 			this.expression();
-			this.state = 219;
+			this.state = 252;
 			this.switchBlock();
 			}
 		}
@@ -1091,38 +1217,38 @@ export class MindLangParser extends Parser {
 	// @RuleVersion(0)
 	public switchBlock(): SwitchBlockContext {
 		let _localctx: SwitchBlockContext = new SwitchBlockContext(this._ctx, this.state);
-		this.enterRule(_localctx, 40, MindLangParser.RULE_switchBlock);
+		this.enterRule(_localctx, 44, MindLangParser.RULE_switchBlock);
 		let _la: number;
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 221;
+			this.state = 254;
 			this.match(MindLangParser.LBRACE);
-			this.state = 225;
+			this.state = 258;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
 			while (_la === MindLangParser.CASE) {
 				{
 				{
-				this.state = 222;
+				this.state = 255;
 				this.switchCase();
 				}
 				}
-				this.state = 227;
+				this.state = 260;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
 			}
-			this.state = 229;
+			this.state = 262;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
 			if (_la === MindLangParser.DEFAULT) {
 				{
-				this.state = 228;
+				this.state = 261;
 				this.defaultClause();
 				}
 			}
 
-			this.state = 231;
+			this.state = 264;
 			this.match(MindLangParser.RBRACE);
 			}
 		}
@@ -1143,17 +1269,17 @@ export class MindLangParser extends Parser {
 	// @RuleVersion(0)
 	public switchCase(): SwitchCaseContext {
 		let _localctx: SwitchCaseContext = new SwitchCaseContext(this._ctx, this.state);
-		this.enterRule(_localctx, 42, MindLangParser.RULE_switchCase);
+		this.enterRule(_localctx, 46, MindLangParser.RULE_switchCase);
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 233;
+			this.state = 266;
 			this.match(MindLangParser.CASE);
-			this.state = 234;
+			this.state = 267;
 			this.expression();
-			this.state = 235;
+			this.state = 268;
 			this.match(MindLangParser.COLON);
-			this.state = 236;
+			this.state = 269;
 			this.statementOrBlock();
 			}
 		}
@@ -1174,15 +1300,15 @@ export class MindLangParser extends Parser {
 	// @RuleVersion(0)
 	public defaultClause(): DefaultClauseContext {
 		let _localctx: DefaultClauseContext = new DefaultClauseContext(this._ctx, this.state);
-		this.enterRule(_localctx, 44, MindLangParser.RULE_defaultClause);
+		this.enterRule(_localctx, 48, MindLangParser.RULE_defaultClause);
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 238;
+			this.state = 271;
 			this.match(MindLangParser.DEFAULT);
-			this.state = 239;
+			this.state = 272;
 			this.match(MindLangParser.COLON);
-			this.state = 240;
+			this.state = 273;
 			this.statementOrBlock();
 			}
 		}
@@ -1203,23 +1329,23 @@ export class MindLangParser extends Parser {
 	// @RuleVersion(0)
 	public eventHandler(): EventHandlerContext {
 		let _localctx: EventHandlerContext = new EventHandlerContext(this._ctx, this.state);
-		this.enterRule(_localctx, 46, MindLangParser.RULE_eventHandler);
+		this.enterRule(_localctx, 50, MindLangParser.RULE_eventHandler);
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 242;
+			this.state = 275;
 			this.match(MindLangParser.ON);
-			this.state = 243;
+			this.state = 276;
 			this.match(MindLangParser.LPAREN);
-			this.state = 244;
+			this.state = 277;
 			this.match(MindLangParser.STRING);
-			this.state = 245;
+			this.state = 278;
 			this.match(MindLangParser.COMMA);
-			this.state = 246;
+			this.state = 279;
 			this.match(MindLangParser.IDENTIFIER);
-			this.state = 247;
+			this.state = 280;
 			this.match(MindLangParser.RPAREN);
-			this.state = 248;
+			this.state = 281;
 			this.block();
 			}
 		}
@@ -1240,23 +1366,23 @@ export class MindLangParser extends Parser {
 	// @RuleVersion(0)
 	public tryCatch(): TryCatchContext {
 		let _localctx: TryCatchContext = new TryCatchContext(this._ctx, this.state);
-		this.enterRule(_localctx, 48, MindLangParser.RULE_tryCatch);
+		this.enterRule(_localctx, 52, MindLangParser.RULE_tryCatch);
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 250;
+			this.state = 283;
 			this.match(MindLangParser.TRY);
-			this.state = 251;
+			this.state = 284;
 			this.block();
-			this.state = 252;
+			this.state = 285;
 			this.match(MindLangParser.CATCH);
-			this.state = 253;
+			this.state = 286;
 			this.match(MindLangParser.LPAREN);
-			this.state = 254;
+			this.state = 287;
 			this.match(MindLangParser.IDENTIFIER);
-			this.state = 255;
+			this.state = 288;
 			this.match(MindLangParser.RPAREN);
-			this.state = 256;
+			this.state = 289;
 			this.block();
 			}
 		}
@@ -1277,15 +1403,15 @@ export class MindLangParser extends Parser {
 	// @RuleVersion(0)
 	public throwStatement(): ThrowStatementContext {
 		let _localctx: ThrowStatementContext = new ThrowStatementContext(this._ctx, this.state);
-		this.enterRule(_localctx, 50, MindLangParser.RULE_throwStatement);
+		this.enterRule(_localctx, 54, MindLangParser.RULE_throwStatement);
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 258;
+			this.state = 291;
 			this.match(MindLangParser.THROW);
-			this.state = 259;
+			this.state = 292;
 			this.expression();
-			this.state = 260;
+			this.state = 293;
 			this.match(MindLangParser.SEMICOLON);
 			}
 		}
@@ -1306,20 +1432,20 @@ export class MindLangParser extends Parser {
 	// @RuleVersion(0)
 	public expression(): ExpressionContext {
 		let _localctx: ExpressionContext = new ExpressionContext(this._ctx, this.state);
-		this.enterRule(_localctx, 52, MindLangParser.RULE_expression);
+		this.enterRule(_localctx, 56, MindLangParser.RULE_expression);
 		let _la: number;
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 262;
+			this.state = 295;
 			this.unaryExpression();
-			this.state = 267;
+			this.state = 300;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
 			while (((((_la - 21)) & ~0x1F) === 0 && ((1 << (_la - 21)) & ((1 << (MindLangParser.PLUS - 21)) | (1 << (MindLangParser.MINUS - 21)) | (1 << (MindLangParser.MULT - 21)) | (1 << (MindLangParser.DIV - 21)) | (1 << (MindLangParser.MOD - 21)) | (1 << (MindLangParser.EQ - 21)) | (1 << (MindLangParser.LT - 21)) | (1 << (MindLangParser.GT - 21)) | (1 << (MindLangParser.LE - 21)) | (1 << (MindLangParser.GE - 21)))) !== 0)) {
 				{
 				{
-				this.state = 263;
+				this.state = 296;
 				_la = this._input.LA(1);
 				if (!(((((_la - 21)) & ~0x1F) === 0 && ((1 << (_la - 21)) & ((1 << (MindLangParser.PLUS - 21)) | (1 << (MindLangParser.MINUS - 21)) | (1 << (MindLangParser.MULT - 21)) | (1 << (MindLangParser.DIV - 21)) | (1 << (MindLangParser.MOD - 21)) | (1 << (MindLangParser.EQ - 21)) | (1 << (MindLangParser.LT - 21)) | (1 << (MindLangParser.GT - 21)) | (1 << (MindLangParser.LE - 21)) | (1 << (MindLangParser.GE - 21)))) !== 0))) {
 				this._errHandler.recoverInline(this);
@@ -1331,11 +1457,11 @@ export class MindLangParser extends Parser {
 					this._errHandler.reportMatch(this);
 					this.consume();
 				}
-				this.state = 264;
+				this.state = 297;
 				this.unaryExpression();
 				}
 				}
-				this.state = 269;
+				this.state = 302;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
 			}
@@ -1358,17 +1484,26 @@ export class MindLangParser extends Parser {
 	// @RuleVersion(0)
 	public unaryExpression(): UnaryExpressionContext {
 		let _localctx: UnaryExpressionContext = new UnaryExpressionContext(this._ctx, this.state);
-		this.enterRule(_localctx, 54, MindLangParser.RULE_unaryExpression);
+		this.enterRule(_localctx, 58, MindLangParser.RULE_unaryExpression);
 		try {
-			this.state = 273;
+			this.state = 308;
 			this._errHandler.sync(this);
 			switch (this._input.LA(1)) {
-			case MindLangParser.MINUS:
+			case MindLangParser.NOT:
 				this.enterOuterAlt(_localctx, 1);
 				{
-				this.state = 270;
+				this.state = 303;
+				this.match(MindLangParser.NOT);
+				this.state = 304;
+				this.unaryExpression();
+				}
+				break;
+			case MindLangParser.MINUS:
+				this.enterOuterAlt(_localctx, 2);
+				{
+				this.state = 305;
 				this.match(MindLangParser.MINUS);
-				this.state = 271;
+				this.state = 306;
 				this.unaryExpression();
 				}
 				break;
@@ -1377,9 +1512,9 @@ export class MindLangParser extends Parser {
 			case MindLangParser.STRING:
 			case MindLangParser.LPAREN:
 			case MindLangParser.LBRACKET:
-				this.enterOuterAlt(_localctx, 2);
+				this.enterOuterAlt(_localctx, 3);
 				{
-				this.state = 272;
+				this.state = 307;
 				this.primaryExpression();
 				}
 				break;
@@ -1404,24 +1539,24 @@ export class MindLangParser extends Parser {
 	// @RuleVersion(0)
 	public primaryExpression(): PrimaryExpressionContext {
 		let _localctx: PrimaryExpressionContext = new PrimaryExpressionContext(this._ctx, this.state);
-		this.enterRule(_localctx, 56, MindLangParser.RULE_primaryExpression);
+		this.enterRule(_localctx, 60, MindLangParser.RULE_primaryExpression);
 		let _la: number;
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 275;
+			this.state = 310;
 			this.basePrimaryExpression();
-			this.state = 279;
+			this.state = 314;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
 			while (((((_la - 36)) & ~0x1F) === 0 && ((1 << (_la - 36)) & ((1 << (MindLangParser.LPAREN - 36)) | (1 << (MindLangParser.LBRACKET - 36)) | (1 << (MindLangParser.DOT - 36)))) !== 0)) {
 				{
 				{
-				this.state = 276;
+				this.state = 311;
 				this.postfixOp();
 				}
 				}
-				this.state = 281;
+				this.state = 316;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
 			}
@@ -1444,76 +1579,76 @@ export class MindLangParser extends Parser {
 	// @RuleVersion(0)
 	public basePrimaryExpression(): BasePrimaryExpressionContext {
 		let _localctx: BasePrimaryExpressionContext = new BasePrimaryExpressionContext(this._ctx, this.state);
-		this.enterRule(_localctx, 58, MindLangParser.RULE_basePrimaryExpression);
+		this.enterRule(_localctx, 62, MindLangParser.RULE_basePrimaryExpression);
 		let _la: number;
 		try {
-			this.state = 301;
+			this.state = 336;
 			this._errHandler.sync(this);
 			switch (this._input.LA(1)) {
 			case MindLangParser.IDENTIFIER:
 				this.enterOuterAlt(_localctx, 1);
 				{
-				this.state = 282;
+				this.state = 317;
 				this.match(MindLangParser.IDENTIFIER);
 				}
 				break;
 			case MindLangParser.NUMBER:
 				this.enterOuterAlt(_localctx, 2);
 				{
-				this.state = 283;
+				this.state = 318;
 				this.match(MindLangParser.NUMBER);
 				}
 				break;
 			case MindLangParser.STRING:
 				this.enterOuterAlt(_localctx, 3);
 				{
-				this.state = 284;
+				this.state = 319;
 				this.match(MindLangParser.STRING);
 				}
 				break;
 			case MindLangParser.LPAREN:
 				this.enterOuterAlt(_localctx, 4);
 				{
-				this.state = 285;
+				this.state = 320;
 				this.match(MindLangParser.LPAREN);
-				this.state = 286;
+				this.state = 321;
 				this.expression();
-				this.state = 287;
+				this.state = 322;
 				this.match(MindLangParser.RPAREN);
 				}
 				break;
 			case MindLangParser.LBRACKET:
 				this.enterOuterAlt(_localctx, 5);
 				{
-				this.state = 289;
+				this.state = 324;
 				this.match(MindLangParser.LBRACKET);
-				this.state = 298;
+				this.state = 333;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
-				if (((((_la - 18)) & ~0x1F) === 0 && ((1 << (_la - 18)) & ((1 << (MindLangParser.IDENTIFIER - 18)) | (1 << (MindLangParser.NUMBER - 18)) | (1 << (MindLangParser.STRING - 18)) | (1 << (MindLangParser.MINUS - 18)) | (1 << (MindLangParser.LPAREN - 18)) | (1 << (MindLangParser.LBRACKET - 18)))) !== 0)) {
+				if (((((_la - 18)) & ~0x1F) === 0 && ((1 << (_la - 18)) & ((1 << (MindLangParser.IDENTIFIER - 18)) | (1 << (MindLangParser.NUMBER - 18)) | (1 << (MindLangParser.STRING - 18)) | (1 << (MindLangParser.MINUS - 18)) | (1 << (MindLangParser.LPAREN - 18)) | (1 << (MindLangParser.LBRACKET - 18)) | (1 << (MindLangParser.NOT - 18)))) !== 0)) {
 					{
-					this.state = 290;
+					this.state = 325;
 					this.expression();
-					this.state = 295;
+					this.state = 330;
 					this._errHandler.sync(this);
 					_la = this._input.LA(1);
 					while (_la === MindLangParser.COMMA) {
 						{
 						{
-						this.state = 291;
+						this.state = 326;
 						this.match(MindLangParser.COMMA);
-						this.state = 292;
+						this.state = 327;
 						this.expression();
 						}
 						}
-						this.state = 297;
+						this.state = 332;
 						this._errHandler.sync(this);
 						_la = this._input.LA(1);
 					}
 					}
 				}
 
-				this.state = 300;
+				this.state = 335;
 				this.match(MindLangParser.RBRACKET);
 				}
 				break;
@@ -1538,64 +1673,64 @@ export class MindLangParser extends Parser {
 	// @RuleVersion(0)
 	public postfixOp(): PostfixOpContext {
 		let _localctx: PostfixOpContext = new PostfixOpContext(this._ctx, this.state);
-		this.enterRule(_localctx, 60, MindLangParser.RULE_postfixOp);
+		this.enterRule(_localctx, 64, MindLangParser.RULE_postfixOp);
 		let _la: number;
 		try {
-			this.state = 321;
+			this.state = 356;
 			this._errHandler.sync(this);
 			switch (this._input.LA(1)) {
 			case MindLangParser.DOT:
 				this.enterOuterAlt(_localctx, 1);
 				{
-				this.state = 303;
+				this.state = 338;
 				this.match(MindLangParser.DOT);
-				this.state = 304;
+				this.state = 339;
 				this.match(MindLangParser.IDENTIFIER);
 				}
 				break;
 			case MindLangParser.LPAREN:
 				this.enterOuterAlt(_localctx, 2);
 				{
-				this.state = 305;
+				this.state = 340;
 				this.match(MindLangParser.LPAREN);
-				this.state = 314;
+				this.state = 349;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
-				if (((((_la - 18)) & ~0x1F) === 0 && ((1 << (_la - 18)) & ((1 << (MindLangParser.IDENTIFIER - 18)) | (1 << (MindLangParser.NUMBER - 18)) | (1 << (MindLangParser.STRING - 18)) | (1 << (MindLangParser.MINUS - 18)) | (1 << (MindLangParser.LPAREN - 18)) | (1 << (MindLangParser.LBRACKET - 18)))) !== 0)) {
+				if (((((_la - 18)) & ~0x1F) === 0 && ((1 << (_la - 18)) & ((1 << (MindLangParser.IDENTIFIER - 18)) | (1 << (MindLangParser.NUMBER - 18)) | (1 << (MindLangParser.STRING - 18)) | (1 << (MindLangParser.MINUS - 18)) | (1 << (MindLangParser.LPAREN - 18)) | (1 << (MindLangParser.LBRACKET - 18)) | (1 << (MindLangParser.NOT - 18)))) !== 0)) {
 					{
-					this.state = 306;
+					this.state = 341;
 					this.expression();
-					this.state = 311;
+					this.state = 346;
 					this._errHandler.sync(this);
 					_la = this._input.LA(1);
 					while (_la === MindLangParser.COMMA) {
 						{
 						{
-						this.state = 307;
+						this.state = 342;
 						this.match(MindLangParser.COMMA);
-						this.state = 308;
+						this.state = 343;
 						this.expression();
 						}
 						}
-						this.state = 313;
+						this.state = 348;
 						this._errHandler.sync(this);
 						_la = this._input.LA(1);
 					}
 					}
 				}
 
-				this.state = 316;
+				this.state = 351;
 				this.match(MindLangParser.RPAREN);
 				}
 				break;
 			case MindLangParser.LBRACKET:
 				this.enterOuterAlt(_localctx, 3);
 				{
-				this.state = 317;
+				this.state = 352;
 				this.match(MindLangParser.LBRACKET);
-				this.state = 318;
+				this.state = 353;
 				this.expression();
-				this.state = 319;
+				this.state = 354;
 				this.match(MindLangParser.RBRACKET);
 				}
 				break;
@@ -1619,152 +1754,170 @@ export class MindLangParser extends Parser {
 	}
 
 	public static readonly _serializedATN: string =
-		"\x03\uC91D\uCABA\u058D\uAFBA\u4F53\u0607\uEA8B\uC241\x031\u0146\x04\x02" +
+		"\x03\uC91D\uCABA\u058D\uAFBA\u4F53\u0607\uEA8B\uC241\x032\u0169\x04\x02" +
 		"\t\x02\x04\x03\t\x03\x04\x04\t\x04\x04\x05\t\x05\x04\x06\t\x06\x04\x07" +
 		"\t\x07\x04\b\t\b\x04\t\t\t\x04\n\t\n\x04\v\t\v\x04\f\t\f\x04\r\t\r\x04" +
 		"\x0E\t\x0E\x04\x0F\t\x0F\x04\x10\t\x10\x04\x11\t\x11\x04\x12\t\x12\x04" +
 		"\x13\t\x13\x04\x14\t\x14\x04\x15\t\x15\x04\x16\t\x16\x04\x17\t\x17\x04" +
 		"\x18\t\x18\x04\x19\t\x19\x04\x1A\t\x1A\x04\x1B\t\x1B\x04\x1C\t\x1C\x04" +
-		"\x1D\t\x1D\x04\x1E\t\x1E\x04\x1F\t\x1F\x04 \t \x03\x02\x07\x02B\n\x02" +
-		"\f\x02\x0E\x02E\v\x02\x03\x03\x03\x03\x03\x03\x05\x03J\n\x03\x03\x04\x03" +
-		"\x04\x03\x04\x03\x04\x03\x05\x03\x05\x07\x05R\n\x05\f\x05\x0E\x05U\v\x05" +
-		"\x03\x05\x03\x05\x03\x06\x03\x06\x05\x06[\n\x06\x03\x07\x03\x07\x03\x07" +
-		"\x03\x07\x03\x07\x03\x07\x03\x07\x03\x07\x03\x07\x03\x07\x03\x07\x05\x07" +
-		"h\n\x07\x03\x07\x03\x07\x03\x07\x03\x07\x03\x07\x05\x07o\n\x07\x03\b\x03" +
+		"\x1D\t\x1D\x04\x1E\t\x1E\x04\x1F\t\x1F\x04 \t \x04!\t!\x04\"\t\"\x03\x02" +
+		"\x07\x02F\n\x02\f\x02\x0E\x02I\v\x02\x03\x03\x03\x03\x03\x03\x05\x03N" +
+		"\n\x03\x03\x04\x03\x04\x03\x04\x03\x04\x03\x05\x03\x05\x07\x05V\n\x05" +
+		"\f\x05\x0E\x05Y\v\x05\x03\x05\x03\x05\x03\x06\x03\x06\x05\x06_\n\x06\x03" +
+		"\x07\x03\x07\x03\x07\x03\x07\x03\x07\x03\x07\x03\x07\x03\x07\x03\x07\x03" +
+		"\x07\x03\x07\x05\x07l\n\x07\x03\x07\x03\x07\x03\x07\x03\x07\x03\x07\x03" +
+		"\x07\x03\x07\x03\x07\x03\x07\x03\x07\x03\x07\x05\x07y\n\x07\x03\b\x03" +
 		"\b\x03\b\x03\b\x03\b\x03\b\x03\t\x03\t\x03\t\x03\t\x03\t\x03\t\x03\t\x03" +
-		"\t\x03\t\x03\t\x05\t\x81\n\t\x03\n\x03\n\x03\n\x03\n\x03\n\x03\n\x03\v" +
-		"\x03\v\x03\v\x03\v\x03\v\x03\v\x07\v\x8F\n\v\f\v\x0E\v\x92\v\v\x03\v\x05" +
-		"\v\x95\n\v\x03\f\x03\f\x03\f\x03\f\x03\f\x03\f\x03\f\x03\r\x03\r\x03\r" +
+		"\t\x03\t\x03\t\x05\t\x8B\n\t\x03\n\x03\n\x03\n\x03\n\x03\n\x03\n\x03\v" +
+		"\x03\v\x03\v\x03\v\x03\v\x03\v\x07\v\x99\n\v\f\v\x0E\v\x9C\v\v\x03\v\x05" +
+		"\v\x9F\n\v\x03\f\x03\f\x03\f\x03\f\x03\f\x03\f\x03\f\x03\r\x03\r\x03\r" +
 		"\x03\x0E\x03\x0E\x03\x0E\x03\x0E\x03\x0E\x03\x0E\x03\x0F\x03\x0F\x03\x0F" +
-		"\x03\x0F\x03\x0F\x03\x0F\x03\x0F\x05\x0F\xAE\n\x0F\x03\x0F\x03\x0F\x03" +
-		"\x0F\x03\x10\x03\x10\x03\x10\x03\x10\x03\x10\x03\x10\x07\x10\xB9\n\x10" +
-		"\f\x10\x0E\x10\xBC\v\x10\x05\x10\xBE\n\x10\x03\x10\x03\x10\x03\x10\x03" +
-		"\x11\x03\x11\x03\x11\x03\x11\x03\x11\x07\x11\xC8\n\x11\f\x11\x0E\x11\xCB" +
-		"\v\x11\x05\x11\xCD\n\x11\x03\x11\x03\x11\x03\x11\x03\x12\x03\x12\x03\x12" +
-		"\x03\x12\x03\x13\x03\x13\x03\x13\x03\x14\x03\x14\x03\x14\x03\x15\x03\x15" +
-		"\x03\x15\x03\x15\x03\x16\x03\x16\x07\x16\xE2\n\x16\f\x16\x0E\x16\xE5\v" +
-		"\x16\x03\x16\x05\x16\xE8\n\x16\x03\x16\x03\x16\x03\x17\x03\x17\x03\x17" +
-		"\x03\x17\x03\x17\x03\x18\x03\x18\x03\x18\x03\x18\x03\x19\x03\x19\x03\x19" +
-		"\x03\x19\x03\x19\x03\x19\x03\x19\x03\x19\x03\x1A\x03\x1A\x03\x1A\x03\x1A" +
-		"\x03\x1A\x03\x1A\x03\x1A\x03\x1A\x03\x1B\x03\x1B\x03\x1B\x03\x1B\x03\x1C" +
-		"\x03\x1C\x03\x1C\x07\x1C\u010C\n\x1C\f\x1C\x0E\x1C\u010F\v\x1C\x03\x1D" +
-		"\x03\x1D\x03\x1D\x05\x1D\u0114\n\x1D\x03\x1E\x03\x1E\x07\x1E\u0118\n\x1E" +
-		"\f\x1E\x0E\x1E\u011B\v\x1E\x03\x1F\x03\x1F\x03\x1F\x03\x1F\x03\x1F\x03" +
-		"\x1F\x03\x1F\x03\x1F\x03\x1F\x03\x1F\x03\x1F\x07\x1F\u0128\n\x1F\f\x1F" +
-		"\x0E\x1F\u012B\v\x1F\x05\x1F\u012D\n\x1F\x03\x1F\x05\x1F\u0130\n\x1F\x03" +
-		" \x03 \x03 \x03 \x03 \x03 \x07 \u0138\n \f \x0E \u013B\v \x05 \u013D\n" +
-		" \x03 \x03 \x03 \x03 \x03 \x05 \u0144\n \x03 \x02\x02\x02!\x02\x02\x04" +
-		"\x02\x06\x02\b\x02\n\x02\f\x02\x0E\x02\x10\x02\x12\x02\x14\x02\x16\x02" +
-		"\x18\x02\x1A\x02\x1C\x02\x1E\x02 \x02\"\x02$\x02&\x02(\x02*\x02,\x02." +
-		"\x020\x022\x024\x026\x028\x02:\x02<\x02>\x02\x02\x04\x03\x02-.\x04\x02" +
-		"\x17\x1B\x1E\"\x02\u0151\x02C\x03\x02\x02\x02\x04I\x03\x02\x02\x02\x06" +
-		"K\x03\x02\x02\x02\bO\x03\x02\x02\x02\nZ\x03\x02\x02\x02\fn\x03\x02\x02" +
-		"\x02\x0Ep\x03\x02\x02\x02\x10\x80\x03\x02\x02\x02\x12\x82\x03\x02\x02" +
-		"\x02\x14\x88\x03\x02\x02\x02\x16\x96\x03\x02\x02\x02\x18\x9D\x03\x02\x02" +
-		"\x02\x1A\xA0\x03\x02\x02\x02\x1C\xA6\x03\x02\x02\x02\x1E\xB2\x03\x02\x02" +
-		"\x02 \xC2\x03\x02\x02\x02\"\xD1\x03\x02\x02\x02$\xD5\x03\x02\x02\x02&" +
-		"\xD8\x03\x02\x02\x02(\xDB\x03\x02\x02\x02*\xDF\x03\x02\x02\x02,\xEB\x03" +
-		"\x02\x02\x02.\xF0\x03\x02\x02\x020\xF4\x03\x02\x02\x022\xFC\x03\x02\x02" +
-		"\x024\u0104\x03\x02\x02\x026\u0108\x03\x02\x02\x028\u0113\x03\x02\x02" +
-		"\x02:\u0115\x03\x02\x02\x02<\u012F\x03\x02\x02\x02>\u0143\x03\x02\x02" +
-		"\x02@B\x05\x04\x03\x02A@\x03\x02\x02\x02BE\x03\x02\x02\x02CA\x03\x02\x02" +
-		"\x02CD\x03\x02\x02\x02D\x03\x03\x02\x02\x02EC\x03\x02\x02\x02FJ\x05\x06" +
-		"\x04\x02GJ\x05\x1E\x10\x02HJ\x05\x0E\b\x02IF\x03\x02\x02\x02IG\x03\x02" +
-		"\x02\x02IH\x03\x02\x02\x02J\x05\x03\x02\x02\x02KL\x07\x13\x02\x02LM\x07" +
-		"\x14\x02\x02MN\x05\b\x05\x02N\x07\x03\x02\x02\x02OS\x07(\x02\x02PR\x05" +
-		"\f\x07\x02QP\x03\x02\x02\x02RU\x03\x02\x02\x02SQ\x03\x02\x02\x02ST\x03" +
-		"\x02\x02\x02TV\x03\x02\x02\x02US\x03\x02\x02\x02VW\x07)\x02\x02W\t\x03" +
-		"\x02\x02\x02X[\x05\b\x05\x02Y[\x05\f\x07\x02ZX\x03\x02\x02\x02ZY\x03\x02" +
-		"\x02\x02[\v\x03\x02\x02\x02\\o\x05\x0E\b\x02]o\x05\x10\t\x02^o\x05\x12" +
-		"\n\x02_o\x05\x14\v\x02`o\x05\x1A\x0E\x02ao\x05\x1C\x0F\x02bo\x05\x1E\x10" +
-		"\x02co\x05 \x11\x02do\x05\"\x12\x02eg\x05$\x13\x02fh\x07#\x02\x02gf\x03" +
-		"\x02\x02\x02gh\x03\x02\x02\x02ho\x03\x02\x02\x02io\x05(\x15\x02jo\x05" +
-		"0\x19\x02ko\x052\x1A\x02lo\x054\x1B\x02mo\x05&\x14\x02n\\\x03\x02\x02" +
-		"\x02n]\x03\x02\x02\x02n^\x03\x02\x02\x02n_\x03\x02\x02\x02n`\x03\x02\x02" +
-		"\x02na\x03\x02\x02\x02nb\x03\x02\x02\x02nc\x03\x02\x02\x02nd\x03\x02\x02" +
-		"\x02ne\x03\x02\x02\x02ni\x03\x02\x02\x02nj\x03\x02\x02\x02nk\x03\x02\x02" +
-		"\x02nl\x03\x02\x02\x02nm\x03\x02\x02\x02o\r\x03\x02\x02\x02pq\x07\x03" +
-		"\x02\x02qr\x07\x14\x02\x02rs\x07\x1C\x02\x02st\x056\x1C\x02tu\x07#\x02" +
-		"\x02u\x0F\x03\x02\x02\x02vw\x07\x14\x02\x02wx\x07\x1C\x02\x02xy\x056\x1C" +
-		"\x02yz\x07#\x02\x02z\x81\x03\x02\x02\x02{|\x07\x14\x02\x02|}\x07\x1D\x02" +
-		"\x02}~\x056\x1C\x02~\x7F\x07#\x02\x02\x7F\x81\x03\x02\x02\x02\x80v\x03" +
-		"\x02\x02\x02\x80{\x03\x02\x02\x02\x81\x11\x03\x02\x02\x02\x82\x83\x07" +
-		"\x05\x02\x02\x83\x84\x07&\x02\x02\x84\x85\x056\x1C\x02\x85\x86\x07\'\x02" +
-		"\x02\x86\x87\x07#\x02\x02\x87\x13\x03\x02\x02\x02\x88\x89\x07\x06\x02" +
-		"\x02\x89\x8A\x07&\x02\x02\x8A\x8B\x056\x1C\x02\x8B\x8C\x07\'\x02\x02\x8C" +
-		"\x90\x05\n\x06\x02\x8D\x8F\x05\x16\f\x02\x8E\x8D\x03\x02\x02\x02\x8F\x92" +
-		"\x03\x02\x02\x02\x90\x8E\x03\x02\x02\x02\x90\x91\x03\x02\x02\x02\x91\x94" +
-		"\x03\x02\x02\x02\x92\x90\x03\x02\x02\x02\x93\x95\x05\x18\r\x02\x94\x93" +
-		"\x03\x02\x02\x02\x94\x95\x03\x02\x02\x02\x95\x15\x03\x02\x02\x02\x96\x97" +
-		"\x07\x07\x02\x02\x97\x98\x07\x06\x02\x02\x98\x99\x07&\x02\x02\x99\x9A" +
-		"\x056\x1C\x02\x9A\x9B\x07\'\x02\x02\x9B\x9C\x05\n\x06\x02\x9C\x17\x03" +
-		"\x02\x02\x02\x9D\x9E\x07\x07\x02\x02\x9E\x9F\x05\n\x06\x02\x9F\x19\x03" +
-		"\x02\x02\x02\xA0\xA1\x07\x04\x02\x02\xA1\xA2\x07&\x02\x02\xA2\xA3\x05" +
-		"6\x1C\x02\xA3\xA4\x07\'\x02\x02\xA4\xA5\x05\n\x06\x02\xA5\x1B\x03\x02" +
-		"\x02\x02\xA6\xA7\x07\t\x02\x02\xA7\xA8\x07&\x02\x02\xA8\xA9\x05\x0E\b" +
-		"\x02\xA9\xAA\x056\x1C\x02\xAA\xAD\x07#\x02\x02\xAB\xAE\x056\x1C\x02\xAC" +
-		"\xAE\x05$\x13\x02\xAD\xAB\x03\x02\x02\x02\xAD\xAC\x03\x02\x02\x02\xAE" +
-		"\xAF\x03\x02\x02\x02\xAF\xB0\x07\'\x02\x02\xB0\xB1\x05\n\x06\x02\xB1\x1D" +
-		"\x03\x02\x02\x02\xB2\xB3\x07\b\x02\x02\xB3\xB4\x07\x14\x02\x02\xB4\xBD" +
-		"\x07&\x02\x02\xB5\xBA\x07\x14\x02\x02\xB6\xB7\x07$\x02\x02\xB7\xB9\x07" +
-		"\x14\x02\x02\xB8\xB6\x03\x02\x02\x02\xB9\xBC\x03\x02\x02\x02\xBA\xB8\x03" +
-		"\x02\x02\x02\xBA\xBB\x03\x02\x02\x02\xBB\xBE\x03\x02\x02\x02\xBC\xBA\x03" +
-		"\x02\x02\x02\xBD\xB5\x03\x02\x02\x02\xBD\xBE\x03\x02\x02\x02\xBE\xBF\x03" +
-		"\x02\x02\x02\xBF\xC0\x07\'\x02\x02\xC0\xC1\x05\b\x05\x02\xC1\x1F\x03\x02" +
-		"\x02\x02\xC2\xC3\x07\x14\x02\x02\xC3\xCC\x07&\x02\x02\xC4\xC9\x056\x1C" +
-		"\x02\xC5\xC6\x07$\x02\x02\xC6\xC8\x056\x1C\x02\xC7\xC5\x03\x02\x02\x02" +
-		"\xC8\xCB\x03\x02\x02\x02\xC9\xC7\x03\x02\x02\x02\xC9\xCA\x03\x02\x02\x02" +
-		"\xCA\xCD\x03\x02\x02\x02\xCB\xC9\x03\x02\x02\x02\xCC\xC4\x03\x02\x02\x02" +
-		"\xCC\xCD\x03\x02\x02\x02\xCD\xCE\x03\x02\x02\x02\xCE\xCF\x07\'\x02\x02" +
-		"\xCF\xD0\x07#\x02\x02\xD0!\x03\x02\x02\x02\xD1\xD2\x07\n\x02\x02\xD2\xD3" +
-		"\x056\x1C\x02\xD3\xD4\x07#\x02\x02\xD4#\x03\x02\x02\x02\xD5\xD6\x07\x14" +
-		"\x02\x02\xD6\xD7\t\x02\x02\x02\xD7%\x03\x02\x02\x02\xD8\xD9\x07\v\x02" +
-		"\x02\xD9\xDA\x07#\x02\x02\xDA\'\x03\x02\x02\x02\xDB\xDC\x07\f\x02\x02" +
-		"\xDC\xDD\x056\x1C\x02\xDD\xDE\x05*\x16\x02\xDE)\x03\x02\x02\x02\xDF\xE3" +
-		"\x07(\x02\x02\xE0\xE2\x05,\x17\x02\xE1\xE0\x03\x02\x02\x02\xE2\xE5\x03" +
-		"\x02\x02\x02\xE3\xE1\x03\x02\x02\x02\xE3\xE4\x03\x02\x02\x02\xE4\xE7\x03" +
-		"\x02\x02\x02\xE5\xE3\x03\x02\x02\x02\xE6\xE8\x05.\x18\x02\xE7\xE6\x03" +
-		"\x02\x02\x02\xE7\xE8\x03\x02\x02\x02\xE8\xE9\x03\x02\x02\x02\xE9\xEA\x07" +
-		")\x02\x02\xEA+\x03\x02\x02\x02\xEB\xEC\x07\r\x02\x02\xEC\xED\x056\x1C" +
-		"\x02\xED\xEE\x07%\x02\x02\xEE\xEF\x05\n\x06\x02\xEF-\x03\x02\x02\x02\xF0" +
-		"\xF1\x07\x0E\x02\x02\xF1\xF2\x07%\x02\x02\xF2\xF3\x05\n\x06\x02\xF3/\x03" +
-		"\x02\x02\x02\xF4\xF5\x07\x0F\x02\x02\xF5\xF6\x07&\x02\x02\xF6\xF7\x07" +
-		"\x16\x02\x02\xF7\xF8\x07$\x02\x02\xF8\xF9\x07\x14\x02\x02\xF9\xFA\x07" +
-		"\'\x02\x02\xFA\xFB\x05\b\x05\x02\xFB1\x03\x02\x02\x02\xFC\xFD\x07\x10" +
-		"\x02\x02\xFD\xFE\x05\b\x05\x02\xFE\xFF\x07\x11\x02\x02\xFF\u0100\x07&" +
-		"\x02\x02\u0100\u0101\x07\x14\x02\x02\u0101\u0102\x07\'\x02\x02\u0102\u0103" +
-		"\x05\b\x05\x02\u01033\x03\x02\x02\x02\u0104\u0105\x07\x12\x02\x02\u0105" +
-		"\u0106\x056\x1C\x02\u0106\u0107\x07#\x02\x02\u01075\x03\x02\x02\x02\u0108" +
-		"\u010D\x058\x1D\x02\u0109\u010A\t\x03\x02\x02\u010A\u010C\x058\x1D\x02" +
-		"\u010B\u0109\x03\x02\x02\x02\u010C\u010F\x03\x02\x02\x02\u010D\u010B\x03" +
-		"\x02\x02\x02\u010D\u010E\x03\x02\x02\x02\u010E7\x03\x02\x02\x02\u010F" +
-		"\u010D\x03\x02\x02\x02\u0110\u0111\x07\x18\x02\x02\u0111\u0114\x058\x1D" +
-		"\x02\u0112\u0114\x05:\x1E\x02\u0113\u0110\x03\x02\x02\x02\u0113\u0112" +
-		"\x03\x02\x02\x02\u01149\x03\x02\x02\x02\u0115\u0119\x05<\x1F\x02\u0116" +
-		"\u0118\x05> \x02\u0117\u0116\x03\x02\x02\x02\u0118\u011B\x03\x02\x02\x02" +
-		"\u0119\u0117\x03\x02\x02\x02\u0119\u011A\x03\x02\x02\x02\u011A;\x03\x02" +
-		"\x02\x02\u011B\u0119\x03\x02\x02\x02\u011C\u0130\x07\x14\x02\x02\u011D" +
-		"\u0130\x07\x15\x02\x02\u011E\u0130\x07\x16\x02\x02\u011F\u0120\x07&\x02" +
-		"\x02\u0120\u0121\x056\x1C\x02\u0121\u0122\x07\'\x02\x02\u0122\u0130\x03" +
-		"\x02\x02\x02\u0123\u012C\x07*\x02\x02\u0124\u0129\x056\x1C\x02\u0125\u0126" +
-		"\x07$\x02\x02\u0126\u0128\x056\x1C\x02\u0127\u0125\x03\x02\x02\x02\u0128" +
-		"\u012B\x03\x02\x02\x02\u0129\u0127\x03\x02\x02\x02\u0129\u012A\x03\x02" +
-		"\x02\x02\u012A\u012D\x03\x02\x02\x02\u012B\u0129\x03\x02\x02\x02\u012C" +
-		"\u0124\x03\x02\x02\x02\u012C\u012D\x03\x02\x02\x02\u012D\u012E\x03\x02" +
-		"\x02\x02\u012E\u0130\x07+\x02\x02\u012F\u011C\x03\x02\x02\x02\u012F\u011D" +
-		"\x03\x02\x02\x02\u012F\u011E\x03\x02\x02\x02\u012F\u011F\x03\x02\x02\x02" +
-		"\u012F\u0123\x03\x02\x02\x02\u0130=\x03\x02\x02\x02\u0131\u0132\x07,\x02" +
-		"\x02\u0132\u0144\x07\x14\x02\x02\u0133\u013C\x07&\x02\x02\u0134\u0139" +
-		"\x056\x1C\x02\u0135\u0136\x07$\x02\x02\u0136\u0138\x056\x1C\x02\u0137" +
-		"\u0135\x03\x02\x02\x02\u0138\u013B\x03\x02\x02\x02\u0139\u0137\x03\x02" +
-		"\x02\x02\u0139\u013A\x03\x02\x02\x02\u013A\u013D\x03\x02\x02\x02\u013B" +
-		"\u0139\x03\x02\x02\x02\u013C\u0134\x03\x02\x02\x02\u013C\u013D\x03\x02" +
-		"\x02\x02\u013D\u013E\x03\x02\x02\x02\u013E\u0144\x07\'\x02\x02\u013F\u0140" +
-		"\x07*\x02\x02\u0140\u0141\x056\x1C\x02\u0141\u0142\x07+\x02\x02\u0142" +
-		"\u0144\x03\x02\x02\x02\u0143\u0131\x03\x02\x02\x02\u0143\u0133\x03\x02" +
-		"\x02\x02\u0143\u013F\x03\x02\x02\x02\u0144?\x03\x02\x02\x02\x1BCISZgn" +
-		"\x80\x90\x94\xAD\xBA\xBD\xC9\xCC\xE3\xE7\u010D\u0113\u0119\u0129\u012C" +
-		"\u012F\u0139\u013C\u0143";
+		"\x03\x0F\x03\x0F\x03\x0F\x03\x0F\x05\x0F\xB8\n\x0F\x03\x0F\x03\x0F\x03" +
+		"\x0F\x03\x10\x03\x10\x03\x10\x03\x10\x03\x10\x03\x10\x07\x10\xC3\n\x10" +
+		"\f\x10\x0E\x10\xC6\v\x10\x05\x10\xC8\n\x10\x03\x10\x03\x10\x03\x10\x03" +
+		"\x11\x03\x11\x03\x11\x03\x11\x03\x11\x07\x11\xD2\n\x11\f\x11\x0E\x11\xD5" +
+		"\v\x11\x05\x11\xD7\n\x11\x03\x11\x03\x11\x03\x11\x03\x12\x03\x12\x03\x12" +
+		"\x03\x12\x03\x12\x03\x12\x03\x12\x07\x12\xE3\n\x12\f\x12\x0E\x12\xE6\v" +
+		"\x12\x05\x12\xE8\n\x12\x03\x12\x03\x12\x03\x13\x03\x13\x05\x13\xEE\n\x13" +
+		"\x03\x13\x03\x13\x03\x14\x03\x14\x03\x14\x03\x14\x03\x14\x03\x15\x03\x15" +
+		"\x03\x15\x03\x16\x03\x16\x03\x16\x03\x17\x03\x17\x03\x17\x03\x17\x03\x18" +
+		"\x03\x18\x07\x18\u0103\n\x18\f\x18\x0E\x18\u0106\v\x18\x03\x18\x05\x18" +
+		"\u0109\n\x18\x03\x18\x03\x18\x03\x19\x03\x19\x03\x19\x03\x19\x03\x19\x03" +
+		"\x1A\x03\x1A\x03\x1A\x03\x1A\x03\x1B\x03\x1B\x03\x1B\x03\x1B\x03\x1B\x03" +
+		"\x1B\x03\x1B\x03\x1B\x03\x1C\x03\x1C\x03\x1C\x03\x1C\x03\x1C\x03\x1C\x03" +
+		"\x1C\x03\x1C\x03\x1D\x03\x1D\x03\x1D\x03\x1D\x03\x1E\x03\x1E\x03\x1E\x07" +
+		"\x1E\u012D\n\x1E\f\x1E\x0E\x1E\u0130\v\x1E\x03\x1F\x03\x1F\x03\x1F\x03" +
+		"\x1F\x03\x1F\x05\x1F\u0137\n\x1F\x03 \x03 \x07 \u013B\n \f \x0E \u013E" +
+		"\v \x03!\x03!\x03!\x03!\x03!\x03!\x03!\x03!\x03!\x03!\x03!\x07!\u014B" +
+		"\n!\f!\x0E!\u014E\v!\x05!\u0150\n!\x03!\x05!\u0153\n!\x03\"\x03\"\x03" +
+		"\"\x03\"\x03\"\x03\"\x07\"\u015B\n\"\f\"\x0E\"\u015E\v\"\x05\"\u0160\n" +
+		"\"\x03\"\x03\"\x03\"\x03\"\x03\"\x05\"\u0167\n\"\x03\"\x02\x02\x02#\x02" +
+		"\x02\x04\x02\x06\x02\b\x02\n\x02\f\x02\x0E\x02\x10\x02\x12\x02\x14\x02" +
+		"\x16\x02\x18\x02\x1A\x02\x1C\x02\x1E\x02 \x02\"\x02$\x02&\x02(\x02*\x02" +
+		",\x02.\x020\x022\x024\x026\x028\x02:\x02<\x02>\x02@\x02B\x02\x02\x04\x03" +
+		"\x02-.\x04\x02\x17\x1B\x1E\"\x02\u0178\x02G\x03\x02\x02\x02\x04M\x03\x02" +
+		"\x02\x02\x06O\x03\x02\x02\x02\bS\x03\x02\x02\x02\n^\x03\x02\x02\x02\f" +
+		"x\x03\x02\x02\x02\x0Ez\x03\x02\x02\x02\x10\x8A\x03\x02\x02\x02\x12\x8C" +
+		"\x03\x02\x02\x02\x14\x92\x03\x02\x02\x02\x16\xA0\x03\x02\x02\x02\x18\xA7" +
+		"\x03\x02\x02\x02\x1A\xAA\x03\x02\x02\x02\x1C\xB0\x03\x02\x02\x02\x1E\xBC" +
+		"\x03\x02\x02\x02 \xCC\x03\x02\x02\x02\"\xDB\x03\x02\x02\x02$\xEB\x03\x02" +
+		"\x02\x02&\xF1\x03\x02\x02\x02(\xF6\x03\x02\x02\x02*\xF9\x03\x02\x02\x02" +
+		",\xFC\x03\x02\x02\x02.\u0100\x03\x02\x02\x020\u010C\x03\x02\x02\x022\u0111" +
+		"\x03\x02\x02\x024\u0115\x03\x02\x02\x026\u011D\x03\x02\x02\x028\u0125" +
+		"\x03\x02\x02\x02:\u0129\x03\x02\x02\x02<\u0136\x03\x02\x02\x02>\u0138" +
+		"\x03\x02\x02\x02@\u0152\x03\x02\x02\x02B\u0166\x03\x02\x02\x02DF\x05\x04" +
+		"\x03\x02ED\x03\x02\x02\x02FI\x03\x02\x02\x02GE\x03\x02\x02\x02GH\x03\x02" +
+		"\x02\x02H\x03\x03\x02\x02\x02IG\x03\x02\x02\x02JN\x05\x06\x04\x02KN\x05" +
+		"\x1E\x10\x02LN\x05\x0E\b\x02MJ\x03\x02\x02\x02MK\x03\x02\x02\x02ML\x03" +
+		"\x02\x02\x02N\x05\x03\x02\x02\x02OP\x07\x13\x02\x02PQ\x07\x14\x02\x02" +
+		"QR\x05\b\x05\x02R\x07\x03\x02\x02\x02SW\x07(\x02\x02TV\x05\f\x07\x02U" +
+		"T\x03\x02\x02\x02VY\x03\x02\x02\x02WU\x03\x02\x02\x02WX\x03\x02\x02\x02" +
+		"XZ\x03\x02\x02\x02YW\x03\x02\x02\x02Z[\x07)\x02\x02[\t\x03\x02\x02\x02" +
+		"\\_\x05\b\x05\x02]_\x05\f\x07\x02^\\\x03\x02\x02\x02^]\x03\x02\x02\x02" +
+		"_\v\x03\x02\x02\x02`y\x05\x0E\b\x02ay\x05\x10\t\x02by\x05\x12\n\x02cy" +
+		"\x05\x14\v\x02dy\x05\x1A\x0E\x02ey\x05\x1C\x0F\x02fy\x05\x1E\x10\x02g" +
+		"y\x05 \x11\x02hy\x05$\x13\x02ik\x05(\x15\x02jl\x07#\x02\x02kj\x03\x02" +
+		"\x02\x02kl\x03\x02\x02\x02ly\x03\x02\x02\x02my\x05,\x17\x02ny\x054\x1B" +
+		"\x02oy\x056\x1C\x02py\x058\x1D\x02qy\x05*\x16\x02rs\x05\"\x12\x02st\x07" +
+		"#\x02\x02ty\x03\x02\x02\x02uv\x05&\x14\x02vw\x07#\x02\x02wy\x03\x02\x02" +
+		"\x02x`\x03\x02\x02\x02xa\x03\x02\x02\x02xb\x03\x02\x02\x02xc\x03\x02\x02" +
+		"\x02xd\x03\x02\x02\x02xe\x03\x02\x02\x02xf\x03\x02\x02\x02xg\x03\x02\x02" +
+		"\x02xh\x03\x02\x02\x02xi\x03\x02\x02\x02xm\x03\x02\x02\x02xn\x03\x02\x02" +
+		"\x02xo\x03\x02\x02\x02xp\x03\x02\x02\x02xq\x03\x02\x02\x02xr\x03\x02\x02" +
+		"\x02xu\x03\x02\x02\x02y\r\x03\x02\x02\x02z{\x07\x03\x02\x02{|\x07\x14" +
+		"\x02\x02|}\x07\x1C\x02\x02}~\x05:\x1E\x02~\x7F\x07#\x02\x02\x7F\x0F\x03" +
+		"\x02\x02\x02\x80\x81\x07\x14\x02\x02\x81\x82\x07\x1C\x02\x02\x82\x83\x05" +
+		":\x1E\x02\x83\x84\x07#\x02\x02\x84\x8B\x03\x02\x02\x02\x85\x86\x07\x14" +
+		"\x02\x02\x86\x87\x07\x1D\x02\x02\x87\x88\x05:\x1E\x02\x88\x89\x07#\x02" +
+		"\x02\x89\x8B\x03\x02\x02\x02\x8A\x80\x03\x02\x02\x02\x8A\x85\x03\x02\x02" +
+		"\x02\x8B\x11\x03\x02\x02\x02\x8C\x8D\x07\x05\x02\x02\x8D\x8E\x07&\x02" +
+		"\x02\x8E\x8F\x05:\x1E\x02\x8F\x90\x07\'\x02\x02\x90\x91\x07#\x02\x02\x91" +
+		"\x13\x03\x02\x02\x02\x92\x93\x07\x06\x02\x02\x93\x94\x07&\x02\x02\x94" +
+		"\x95\x05:\x1E\x02\x95\x96\x07\'\x02\x02\x96\x9A\x05\n\x06\x02\x97\x99" +
+		"\x05\x16\f\x02\x98\x97\x03\x02\x02\x02\x99\x9C\x03\x02\x02\x02\x9A\x98" +
+		"\x03\x02\x02\x02\x9A\x9B\x03\x02\x02\x02\x9B\x9E\x03\x02\x02\x02\x9C\x9A" +
+		"\x03\x02\x02\x02\x9D\x9F\x05\x18\r\x02\x9E\x9D\x03\x02\x02\x02\x9E\x9F" +
+		"\x03\x02\x02\x02\x9F\x15\x03\x02\x02\x02\xA0\xA1\x07\x07\x02\x02\xA1\xA2" +
+		"\x07\x06\x02\x02\xA2\xA3\x07&\x02\x02\xA3\xA4\x05:\x1E\x02\xA4\xA5\x07" +
+		"\'\x02\x02\xA5\xA6\x05\n\x06\x02\xA6\x17\x03\x02\x02\x02\xA7\xA8\x07\x07" +
+		"\x02\x02\xA8\xA9\x05\n\x06\x02\xA9\x19\x03\x02\x02\x02\xAA\xAB\x07\x04" +
+		"\x02\x02\xAB\xAC\x07&\x02\x02\xAC\xAD\x05:\x1E\x02\xAD\xAE\x07\'\x02\x02" +
+		"\xAE\xAF\x05\n\x06\x02\xAF\x1B\x03\x02\x02\x02\xB0\xB1\x07\t\x02\x02\xB1" +
+		"\xB2\x07&\x02\x02\xB2\xB3\x05\x0E\b\x02\xB3\xB4\x05:\x1E\x02\xB4\xB7\x07" +
+		"#\x02\x02\xB5\xB8\x05:\x1E\x02\xB6\xB8\x05(\x15\x02\xB7\xB5\x03\x02\x02" +
+		"\x02\xB7\xB6\x03\x02\x02\x02\xB8\xB9\x03\x02\x02\x02\xB9\xBA\x07\'\x02" +
+		"\x02\xBA\xBB\x05\n\x06\x02\xBB\x1D\x03\x02\x02\x02\xBC\xBD\x07\b\x02\x02" +
+		"\xBD\xBE\x07\x14\x02\x02\xBE\xC7\x07&\x02\x02\xBF\xC4\x07\x14\x02\x02" +
+		"\xC0\xC1\x07$\x02\x02\xC1\xC3\x07\x14\x02\x02\xC2\xC0\x03\x02\x02\x02" +
+		"\xC3\xC6\x03\x02\x02\x02\xC4\xC2\x03\x02\x02\x02\xC4\xC5\x03\x02\x02\x02" +
+		"\xC5\xC8\x03\x02\x02\x02\xC6\xC4\x03\x02\x02\x02\xC7\xBF\x03\x02\x02\x02" +
+		"\xC7\xC8\x03\x02\x02\x02\xC8\xC9\x03\x02\x02\x02\xC9\xCA\x07\'\x02\x02" +
+		"\xCA\xCB\x05\b\x05\x02\xCB\x1F\x03\x02\x02\x02\xCC\xCD\x07\x14\x02\x02" +
+		"\xCD\xD6\x07&\x02\x02\xCE\xD3\x05:\x1E\x02\xCF\xD0\x07$\x02\x02\xD0\xD2" +
+		"\x05:\x1E\x02\xD1\xCF\x03\x02\x02\x02\xD2\xD5\x03\x02\x02\x02\xD3\xD1" +
+		"\x03\x02\x02\x02\xD3\xD4\x03\x02\x02\x02\xD4\xD7\x03\x02\x02\x02\xD5\xD3" +
+		"\x03\x02\x02\x02\xD6\xCE\x03\x02\x02\x02\xD6\xD7\x03\x02\x02\x02\xD7\xD8" +
+		"\x03\x02\x02\x02\xD8\xD9\x07\'\x02\x02\xD9\xDA\x07#\x02\x02\xDA!\x03\x02" +
+		"\x02\x02\xDB\xDC\x07\x14\x02\x02\xDC\xDD\x07,\x02\x02\xDD\xDE\x07\x14" +
+		"\x02\x02\xDE\xE7\x07&\x02\x02\xDF\xE4\x05:\x1E\x02\xE0\xE1\x07$\x02\x02" +
+		"\xE1\xE3\x05:\x1E\x02\xE2\xE0\x03\x02\x02\x02\xE3\xE6\x03\x02\x02\x02" +
+		"\xE4\xE2\x03\x02\x02\x02\xE4\xE5\x03\x02\x02\x02\xE5\xE8\x03\x02\x02\x02" +
+		"\xE6\xE4\x03\x02\x02\x02\xE7\xDF\x03\x02\x02\x02\xE7\xE8\x03\x02\x02\x02" +
+		"\xE8\xE9\x03\x02\x02\x02\xE9\xEA\x07\'\x02\x02\xEA#\x03\x02\x02\x02\xEB" +
+		"\xED\x07\n\x02\x02\xEC\xEE\x05:\x1E\x02\xED\xEC\x03\x02\x02\x02\xED\xEE" +
+		"\x03\x02\x02\x02\xEE\xEF\x03\x02\x02\x02\xEF\xF0\x07#\x02\x02\xF0%\x03" +
+		"\x02\x02\x02\xF1\xF2\x07/\x02\x02\xF2\xF3\x07&\x02\x02\xF3\xF4\x05:\x1E" +
+		"\x02\xF4\xF5\x07\'\x02\x02\xF5\'\x03\x02\x02\x02\xF6\xF7\x07\x14\x02\x02" +
+		"\xF7\xF8\t\x02\x02\x02\xF8)\x03\x02\x02\x02\xF9\xFA\x07\v\x02\x02\xFA" +
+		"\xFB\x07#\x02\x02\xFB+\x03\x02\x02\x02\xFC\xFD\x07\f\x02\x02\xFD\xFE\x05" +
+		":\x1E\x02\xFE\xFF\x05.\x18\x02\xFF-\x03\x02\x02\x02\u0100\u0104\x07(\x02" +
+		"\x02\u0101\u0103\x050\x19\x02\u0102\u0101\x03\x02\x02\x02\u0103\u0106" +
+		"\x03\x02\x02\x02\u0104\u0102\x03\x02\x02\x02\u0104\u0105\x03\x02\x02\x02" +
+		"\u0105\u0108\x03\x02\x02\x02\u0106\u0104\x03\x02\x02\x02\u0107\u0109\x05" +
+		"2\x1A\x02\u0108\u0107\x03\x02\x02\x02\u0108\u0109\x03\x02\x02\x02\u0109" +
+		"\u010A\x03\x02\x02\x02\u010A\u010B\x07)\x02\x02\u010B/\x03\x02\x02\x02" +
+		"\u010C\u010D\x07\r\x02\x02\u010D\u010E\x05:\x1E\x02\u010E\u010F\x07%\x02" +
+		"\x02\u010F\u0110\x05\n\x06\x02\u01101\x03\x02\x02\x02\u0111\u0112\x07" +
+		"\x0E\x02\x02\u0112\u0113\x07%\x02\x02\u0113\u0114\x05\n\x06\x02\u0114" +
+		"3\x03\x02\x02\x02\u0115\u0116\x07\x0F\x02\x02\u0116\u0117\x07&\x02\x02" +
+		"\u0117\u0118\x07\x16\x02\x02\u0118\u0119\x07$\x02\x02\u0119\u011A\x07" +
+		"\x14\x02\x02\u011A\u011B\x07\'\x02\x02\u011B\u011C\x05\b\x05\x02\u011C" +
+		"5\x03\x02\x02\x02\u011D\u011E\x07\x10\x02\x02\u011E\u011F\x05\b\x05\x02" +
+		"\u011F\u0120\x07\x11\x02\x02\u0120\u0121\x07&\x02\x02\u0121\u0122\x07" +
+		"\x14\x02\x02\u0122\u0123\x07\'\x02\x02\u0123\u0124\x05\b\x05\x02\u0124" +
+		"7\x03\x02\x02\x02\u0125\u0126\x07\x12\x02\x02\u0126\u0127\x05:\x1E\x02" +
+		"\u0127\u0128\x07#\x02\x02\u01289\x03\x02\x02\x02\u0129\u012E\x05<\x1F" +
+		"\x02\u012A\u012B\t\x03\x02\x02\u012B\u012D\x05<\x1F\x02\u012C\u012A\x03" +
+		"\x02\x02\x02\u012D\u0130\x03\x02\x02\x02\u012E\u012C\x03\x02\x02\x02\u012E" +
+		"\u012F\x03\x02\x02\x02\u012F;\x03\x02\x02\x02\u0130\u012E\x03\x02\x02" +
+		"\x02\u0131\u0132\x07/\x02\x02\u0132\u0137\x05<\x1F\x02\u0133\u0134\x07" +
+		"\x18\x02\x02\u0134\u0137\x05<\x1F\x02\u0135\u0137\x05> \x02\u0136\u0131" +
+		"\x03\x02\x02\x02\u0136\u0133\x03\x02\x02\x02\u0136\u0135\x03\x02\x02\x02" +
+		"\u0137=\x03\x02\x02\x02\u0138\u013C\x05@!\x02\u0139\u013B\x05B\"\x02\u013A" +
+		"\u0139\x03\x02\x02\x02\u013B\u013E\x03\x02\x02\x02\u013C\u013A\x03\x02" +
+		"\x02\x02\u013C\u013D\x03\x02\x02\x02\u013D?\x03\x02\x02\x02\u013E\u013C" +
+		"\x03\x02\x02\x02\u013F\u0153\x07\x14\x02\x02\u0140\u0153\x07\x15\x02\x02" +
+		"\u0141\u0153\x07\x16\x02\x02\u0142\u0143\x07&\x02\x02\u0143\u0144\x05" +
+		":\x1E\x02\u0144\u0145\x07\'\x02\x02\u0145\u0153\x03\x02\x02\x02\u0146" +
+		"\u014F\x07*\x02\x02\u0147\u014C\x05:\x1E\x02\u0148\u0149\x07$\x02\x02" +
+		"\u0149\u014B\x05:\x1E\x02\u014A\u0148\x03\x02\x02\x02\u014B\u014E\x03" +
+		"\x02\x02\x02\u014C\u014A\x03\x02\x02\x02\u014C\u014D\x03\x02\x02\x02\u014D" +
+		"\u0150\x03\x02\x02\x02\u014E\u014C\x03\x02\x02\x02\u014F\u0147\x03\x02" +
+		"\x02\x02\u014F\u0150\x03\x02\x02\x02\u0150\u0151\x03\x02\x02\x02\u0151" +
+		"\u0153\x07+\x02\x02\u0152\u013F\x03\x02\x02\x02\u0152\u0140\x03\x02\x02" +
+		"\x02\u0152\u0141\x03\x02\x02\x02\u0152\u0142\x03\x02\x02\x02\u0152\u0146" +
+		"\x03\x02\x02\x02\u0153A\x03\x02\x02\x02\u0154\u0155\x07,\x02\x02\u0155" +
+		"\u0167\x07\x14\x02\x02\u0156\u015F\x07&\x02\x02\u0157\u015C\x05:\x1E\x02" +
+		"\u0158\u0159\x07$\x02\x02\u0159\u015B\x05:\x1E\x02\u015A\u0158\x03\x02" +
+		"\x02\x02\u015B\u015E\x03\x02\x02\x02\u015C\u015A\x03\x02\x02\x02\u015C" +
+		"\u015D\x03\x02\x02\x02\u015D\u0160\x03\x02\x02\x02\u015E\u015C\x03\x02" +
+		"\x02\x02\u015F\u0157\x03\x02\x02\x02\u015F\u0160\x03\x02\x02\x02\u0160" +
+		"\u0161\x03\x02\x02\x02\u0161\u0167\x07\'\x02\x02\u0162\u0163\x07*\x02" +
+		"\x02\u0163\u0164\x05:\x1E\x02\u0164\u0165\x07+\x02\x02\u0165\u0167\x03" +
+		"\x02\x02\x02\u0166\u0154\x03\x02\x02\x02\u0166\u0156\x03\x02\x02\x02\u0166" +
+		"\u0162\x03\x02\x02\x02\u0167C\x03\x02\x02\x02\x1EGMW^kx\x8A\x9A\x9E\xB7" +
+		"\xC4\xC7\xD3\xD6\xE4\xE7\xED\u0104\u0108\u012E\u0136\u013C\u014C\u014F" +
+		"\u0152\u015C\u015F\u0166";
 	public static __ATN: ATN;
 	public static get _ATN(): ATN {
 		if (!MindLangParser.__ATN) {
@@ -2007,6 +2160,12 @@ export class StatementContext extends ParserRuleContext {
 	}
 	public breakStatement(): BreakStatementContext | undefined {
 		return this.tryGetRuleContext(0, BreakStatementContext);
+	}
+	public functionAccessStatement(): FunctionAccessStatementContext | undefined {
+		return this.tryGetRuleContext(0, FunctionAccessStatementContext);
+	}
+	public notStatement(): NotStatementContext | undefined {
+		return this.tryGetRuleContext(0, NotStatementContext);
 	}
 	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
 		super(parent, invokingState);
@@ -2459,12 +2618,71 @@ export class FunctionCallContext extends ParserRuleContext {
 }
 
 
+export class FunctionAccessStatementContext extends ParserRuleContext {
+	public IDENTIFIER(): TerminalNode[];
+	public IDENTIFIER(i: number): TerminalNode;
+	public IDENTIFIER(i?: number): TerminalNode | TerminalNode[] {
+		if (i === undefined) {
+			return this.getTokens(MindLangParser.IDENTIFIER);
+		} else {
+			return this.getToken(MindLangParser.IDENTIFIER, i);
+		}
+	}
+	public DOT(): TerminalNode { return this.getToken(MindLangParser.DOT, 0); }
+	public LPAREN(): TerminalNode { return this.getToken(MindLangParser.LPAREN, 0); }
+	public RPAREN(): TerminalNode { return this.getToken(MindLangParser.RPAREN, 0); }
+	public expression(): ExpressionContext[];
+	public expression(i: number): ExpressionContext;
+	public expression(i?: number): ExpressionContext | ExpressionContext[] {
+		if (i === undefined) {
+			return this.getRuleContexts(ExpressionContext);
+		} else {
+			return this.getRuleContext(i, ExpressionContext);
+		}
+	}
+	public COMMA(): TerminalNode[];
+	public COMMA(i: number): TerminalNode;
+	public COMMA(i?: number): TerminalNode | TerminalNode[] {
+		if (i === undefined) {
+			return this.getTokens(MindLangParser.COMMA);
+		} else {
+			return this.getToken(MindLangParser.COMMA, i);
+		}
+	}
+	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
+		super(parent, invokingState);
+	}
+	// @Override
+	public get ruleIndex(): number { return MindLangParser.RULE_functionAccessStatement; }
+	// @Override
+	public enterRule(listener: MindLangListener): void {
+		if (listener.enterFunctionAccessStatement) {
+			listener.enterFunctionAccessStatement(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: MindLangListener): void {
+		if (listener.exitFunctionAccessStatement) {
+			listener.exitFunctionAccessStatement(this);
+		}
+	}
+	// @Override
+	public accept<Result>(visitor: MindLangVisitor<Result>): Result {
+		if (visitor.visitFunctionAccessStatement) {
+			return visitor.visitFunctionAccessStatement(this);
+		} else {
+			return visitor.visitChildren(this);
+		}
+	}
+}
+
+
 export class ReturnStatementContext extends ParserRuleContext {
 	public RETURN(): TerminalNode { return this.getToken(MindLangParser.RETURN, 0); }
-	public expression(): ExpressionContext {
-		return this.getRuleContext(0, ExpressionContext);
-	}
 	public SEMICOLON(): TerminalNode { return this.getToken(MindLangParser.SEMICOLON, 0); }
+	public expression(): ExpressionContext | undefined {
+		return this.tryGetRuleContext(0, ExpressionContext);
+	}
 	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
 		super(parent, invokingState);
 	}
@@ -2486,6 +2704,41 @@ export class ReturnStatementContext extends ParserRuleContext {
 	public accept<Result>(visitor: MindLangVisitor<Result>): Result {
 		if (visitor.visitReturnStatement) {
 			return visitor.visitReturnStatement(this);
+		} else {
+			return visitor.visitChildren(this);
+		}
+	}
+}
+
+
+export class NotStatementContext extends ParserRuleContext {
+	public NOT(): TerminalNode { return this.getToken(MindLangParser.NOT, 0); }
+	public LPAREN(): TerminalNode { return this.getToken(MindLangParser.LPAREN, 0); }
+	public expression(): ExpressionContext {
+		return this.getRuleContext(0, ExpressionContext);
+	}
+	public RPAREN(): TerminalNode { return this.getToken(MindLangParser.RPAREN, 0); }
+	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
+		super(parent, invokingState);
+	}
+	// @Override
+	public get ruleIndex(): number { return MindLangParser.RULE_notStatement; }
+	// @Override
+	public enterRule(listener: MindLangListener): void {
+		if (listener.enterNotStatement) {
+			listener.enterNotStatement(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: MindLangListener): void {
+		if (listener.exitNotStatement) {
+			listener.exitNotStatement(this);
+		}
+	}
+	// @Override
+	public accept<Result>(visitor: MindLangVisitor<Result>): Result {
+		if (visitor.visitNotStatement) {
+			return visitor.visitNotStatement(this);
 		} else {
 			return visitor.visitChildren(this);
 		}
@@ -2950,10 +3203,11 @@ export class ExpressionContext extends ParserRuleContext {
 
 
 export class UnaryExpressionContext extends ParserRuleContext {
-	public MINUS(): TerminalNode | undefined { return this.tryGetToken(MindLangParser.MINUS, 0); }
+	public NOT(): TerminalNode | undefined { return this.tryGetToken(MindLangParser.NOT, 0); }
 	public unaryExpression(): UnaryExpressionContext | undefined {
 		return this.tryGetRuleContext(0, UnaryExpressionContext);
 	}
+	public MINUS(): TerminalNode | undefined { return this.tryGetToken(MindLangParser.MINUS, 0); }
 	public primaryExpression(): PrimaryExpressionContext | undefined {
 		return this.tryGetRuleContext(0, PrimaryExpressionContext);
 	}

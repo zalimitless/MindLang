@@ -19,7 +19,9 @@ import { WhileStatementContext } from "./MindLangParser";
 import { ForStatementContext } from "./MindLangParser";
 import { FunctionDeclarationContext } from "./MindLangParser";
 import { FunctionCallContext } from "./MindLangParser";
+import { FunctionAccessStatementContext } from "./MindLangParser";
 import { ReturnStatementContext } from "./MindLangParser";
+import { NotStatementContext } from "./MindLangParser";
 import { IncrementDecrementStatementContext } from "./MindLangParser";
 import { BreakStatementContext } from "./MindLangParser";
 import { SwitchStatementContext } from "./MindLangParser";
@@ -218,6 +220,17 @@ export interface MindLangListener extends ParseTreeListener {
 	exitFunctionCall?: (ctx: FunctionCallContext) => void;
 
 	/**
+	 * Enter a parse tree produced by `MindLangParser.functionAccessStatement`.
+	 * @param ctx the parse tree
+	 */
+	enterFunctionAccessStatement?: (ctx: FunctionAccessStatementContext) => void;
+	/**
+	 * Exit a parse tree produced by `MindLangParser.functionAccessStatement`.
+	 * @param ctx the parse tree
+	 */
+	exitFunctionAccessStatement?: (ctx: FunctionAccessStatementContext) => void;
+
+	/**
 	 * Enter a parse tree produced by `MindLangParser.returnStatement`.
 	 * @param ctx the parse tree
 	 */
@@ -227,6 +240,17 @@ export interface MindLangListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	exitReturnStatement?: (ctx: ReturnStatementContext) => void;
+
+	/**
+	 * Enter a parse tree produced by `MindLangParser.notStatement`.
+	 * @param ctx the parse tree
+	 */
+	enterNotStatement?: (ctx: NotStatementContext) => void;
+	/**
+	 * Exit a parse tree produced by `MindLangParser.notStatement`.
+	 * @param ctx the parse tree
+	 */
+	exitNotStatement?: (ctx: NotStatementContext) => void;
 
 	/**
 	 * Enter a parse tree produced by `MindLangParser.incrementDecrementStatement`.

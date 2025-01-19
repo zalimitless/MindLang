@@ -29,6 +29,7 @@ import {
   DefaultClauseContext,
   SwitchCaseContext,
   SwitchStatementContext,
+  FunctionAccessStatementContext,
 } from "./MindLangParser";
 import { MindLangVisitor } from "./MindLangVisitor";
 import { ASTNode } from "../types/ast";
@@ -168,6 +169,8 @@ export class ConcreteMindLangVisitor
       return this.visit(ctx.tryCatch()!);
     } else if (ctx.eventHandler()) {
       return this.visit(ctx.eventHandler()!);
+    } else if (ctx.functionAccessStatement()) {
+      return this.visit(ctx.functionAccessStatement()!);
     }
     return this.defaultResult();
   }
@@ -272,7 +275,7 @@ export class ConcreteMindLangVisitor
   visitReturnStatement(ctx: ReturnStatementContext): ASTNode {
     return {
       type: "ReturnStatement",
-      children: [this.visit(ctx.expression())],
+      children: ctx.expression() ? [this.visit(ctx.expression()!)] : [],
     };
   }
 
@@ -322,41 +325,58 @@ export class ConcreteMindLangVisitor
     return this.visit(ctx.unaryExpression(0)!);
   }
 
-    visitUnaryExpression(ctx: UnaryExpressionContext): ASTNode {
-    return {
+  visitUnaryExpression(ctx: UnaryExpressionContext): ASTNode {
+    if (ctx.NOT()) {
+      return {
         type: "UnaryExpression",
-        value: ctx.MINUS() ? "-" : undefined, // Safely access MINUS operator
-        children: [this.visit(ctx.primaryExpression()!)],
-    };
+        value: "!",
+        children: ctx.unaryExpression() ? [this.visit(ctx.unaryExpression()!)] : [],
+      };
+    } else if (ctx.MINUS()) {
+      return {
+        type: "UnaryExpression",
+        value: "-",
+        children: ctx.unaryExpression() ? [this.visit(ctx.unaryExpression()!)] : [],
+      };
     }
+    return ctx.primaryExpression() ? this.visit(ctx.primaryExpression()!) : this.defaultResult();
+  }
 
-    visitBasePrimaryExpression(ctx: BasePrimaryExpressionContext): ASTNode {
-        if (ctx.IDENTIFIER()) {
-          return { type: "Identifier", value: ctx.IDENTIFIER()!.text };
-        } else if (ctx.NUMBER()) {
-          return { type: "NumberLiteral", value: ctx.NUMBER()!.text };
-        } else if (ctx.STRING()) {
-          return { type: "StringLiteral", value: ctx.STRING()!.text };
-        } else if (ctx.expression(0)) {
-          return this.visit(ctx.expression(0)!);
-        }
-        return this.defaultResult();
-      }
+  visitBasePrimaryExpression(ctx: BasePrimaryExpressionContext): ASTNode {
+    if (ctx.IDENTIFIER()) {
+      return { type: "Identifier", value: ctx.IDENTIFIER()!.text };
+    } else if (ctx.NUMBER()) {
+      return { type: "NumberLiteral", value: ctx.NUMBER()!.text };
+    } else if (ctx.STRING()) {
+      return { type: "StringLiteral", value: ctx.STRING()!.text };
+    } else if (ctx.expression(0)) {
+      return this.visit(ctx.expression(0)!);
+    }
+    return this.defaultResult();
+  }
 
-      visitPostfixOp(ctx: PostfixOpContext): ASTNode {
-        if (ctx.DOT() && ctx.IDENTIFIER()) {
-          return { type: "PostfixDot", value: ctx.IDENTIFIER()!.text };
-        } else if (ctx.LPAREN()) {
-          return {
-            type: "PostfixCall",
-            children: ctx.expression().map((expr) => this.visit(expr)),
-          };
-        } else if (ctx.LBRACKET() && ctx.expression(0)) {
-          return {
-            type: "PostfixIndex",
-            children: [this.visit(ctx.expression(0)!)],
-          };
-        }
-        return this.defaultResult();
-      }
+  visitPostfixOp(ctx: PostfixOpContext): ASTNode {
+    if (ctx.DOT() && ctx.IDENTIFIER()) {
+      return { type: "PostfixDot", value: ctx.IDENTIFIER()!.text };
+    } else if (ctx.LPAREN()) {
+      return {
+        type: "PostfixCall",
+        children: ctx.expression().map((expr) => this.visit(expr)),
+      };
+    } else if (ctx.LBRACKET() && ctx.expression(0)) {
+      return {
+        type: "PostfixIndex",
+        children: [this.visit(ctx.expression(0)!)],
+      };
+    }
+    return this.defaultResult();
+  }
+
+  visitFunctionAccessStatement(ctx: FunctionAccessStatementContext): ASTNode {
+    return {
+      type: "FunctionAccess",
+      value: ctx.IDENTIFIER(0).text + "." + ctx.IDENTIFIER(1).text,
+      children: ctx.expression().map((expr) => this.visit(expr)),
+    };
+  }
 }

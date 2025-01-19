@@ -71,10 +71,7 @@ describe('Testing Visitor Functions', () => {
         let variableDeclaration = getChild(processorBlock, 0);
         expectTypeValue(variableDeclaration, 'VariableDeclaration', 'x');
 
-        let unaryExpression = getChild(variableDeclaration, 0);
-        expectTypeValue(unaryExpression, 'UnaryExpression');
-
-        let numberLiteral = getChild(unaryExpression, 0);
+        let numberLiteral = getChild(variableDeclaration, 0);
         expectTypeValue(numberLiteral, 'NumberLiteral', '0');
     });
 
@@ -86,10 +83,7 @@ describe('Testing Visitor Functions', () => {
         let variableDeclaration = getChild(ast, 0);
         expectTypeValue(variableDeclaration, 'VariableDeclaration', 'x');
 
-        let unaryExpression = getChild(variableDeclaration, 0);
-        expectTypeValue(unaryExpression, 'UnaryExpression');
-
-        let numberLiteral = getChild(unaryExpression, 0);
+        let numberLiteral = getChild(variableDeclaration, 0);
         expectTypeValue(numberLiteral, 'NumberLiteral', '0');
     });
 
@@ -109,17 +103,11 @@ describe('Testing Visitor Functions', () => {
         expectTypeValue(condition, 'BinaryExpression', '<');
 
         // Check the left and right side of the Binary Expression
-        const leftSide_UnaryExpression = getChild(condition, 0);
-        expectTypeValue(leftSide_UnaryExpression, 'UnaryExpression');
-
-        const leftSide_Indetifier = getChild(leftSide_UnaryExpression, 0);
+        const leftSide_Indetifier = getChild(condition, 0);
         expectTypeValue(leftSide_Indetifier, 'Identifier', 'x');
 
         // Check the right side of the Binary Expression
-        const rightSide_UnaryExpression = getChild(condition, 1);
-        expectTypeValue(rightSide_UnaryExpression, 'UnaryExpression');
-
-        const rightSide_NumberLiteral = getChild(rightSide_UnaryExpression, 0);
+        const rightSide_NumberLiteral = getChild(condition, 1);
         expectTypeValue(rightSide_NumberLiteral, 'NumberLiteral', '5');
 
         // TODO Test the body of the while loop

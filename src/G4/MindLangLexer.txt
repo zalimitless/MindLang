@@ -23,7 +23,7 @@ PROCESSOR: 'processor';
 
 // Operators and Symbols
 IDENTIFIER: [a-zA-Z_][a-zA-Z0-9_]*;
-NUMBER: [0-9]+;
+NUMBER: [0-9]+ ('.' [0-9]+)?;
 STRING: '"' .*? '"';  // Quoted string literals
 PLUS: '+';
 MINUS: '-';
@@ -31,7 +31,7 @@ MULT: '*';
 DIV: '/';
 MOD: '%';
 ASSIGN: '=';
-PLUS_ASSIGN: '+='; 
+PLUS_ASSIGN: '+=';
 EQ: '==';
 LT: '<';
 GT: '>';
@@ -49,6 +49,7 @@ RBRACKET: ']';
 DOT: '.';
 INCREMENT: '++';
 DECREMENT: '--';
+NOT: '!';
 
 // Comments
 LINE_COMMENT: '//' ~[\r\n]* -> skip;
